@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.mapper.VodDetailMapper">
+
+    <resultMap id="vodDetailMap" type="xyz.jdynb.dymovies.entity.VodDetail">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="vid" column="vid" jdbcType="INTEGER"/>
+        <result property="pic" column="pic" jdbcType="VARCHAR"/>
+        <result property="lang" column="lang" jdbcType="VARCHAR"/>
+        <result property="area" column="area" jdbcType="VARCHAR"/>
+        <result property="year" column="year" jdbcType="SMALLINT"/>
+        <result property="actor" column="actor" jdbcType="VARCHAR"/>
+        <result property="director" column="director" jdbcType="VARCHAR"/>
+        <result property="des" column="des" jdbcType="VARCHAR"/>
+        <result property="flag" column="flag" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR" />
+        <result property="videoUrl" column="videoUrl" jdbcType="VARCHAR" />
+        <result property="videoId" column="videoId" javaType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="detailMap" type="xyz.jdynb.dymovies.entity.VodDetail" extends="vodDetailMap">
+        <!--<association property="vod" javaType="xyz.jdynb.dymovies.entity.Vod">
+            <id column="vid" property="id" />
+            <result column="name" property="name" />
+            <result column="note" property="note" />
+        </association>-->
+        <!--<collection property="videos" ofType="xyz.jdynb.dymovies.entity.VodVideo">
+            <result column="videoUrl" property="url"/>
+            <result column="videoName" property="name" />
+        </collection>-->
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,vid,pic,
+        lang,area,year,
+        actor,director,des,flag
+    </sql>
+    <insert id="addBatch">
+        insert into dy_movies.vod_detail (vid, pic, lang, area, year, actor, director, des, flag, hits, score, duration) VALUES
+        <foreach collection="vodDetails" item="item" separator=",">
+            (#{item.vid},#{item.pic},#{item.lang},#{item.area},#{item.year},#{item.actor},#{item.director},#{item.des},#{item.flag},#{item.hits},#{item.score},#{item.duration})
+        </foreach>
+    </insert>
+    <insert id="add">
+        insert into dy_movies.vod_detail (vid, pic, lang, area, year, actor, director, des, flag, hits, score, duration)
+        values (#{vid}, #{pic}, #{lang}, #{area}, #{year}, #{actor}, #{director}, #{des}, #{flag},#{hits},#{score},#{duration})
+    </insert>
+    <select id="countByVidAndFlag" resultType="int">
+        select count(*)
+        from dy_movies.vod_detail
+        where flag = #{flag}
+          and vid = #{vid}
+    </select>
+    <select id="count" resultType="int">
+        select count(*)
+        from dy_movies.vod_detail
+        where flag = #{flag}
+    </select>
+    <select id="findById" resultMap="vodDetailMap">
+        select vd.vid,
+               vd.flag,
+               vd.actor,
+               vd.area,
+               vd.des,
+               vd.director,
+               vd.lang,
+               vd.pic,
+               vd.year,
+               vd.hits,
+               vd.score,
+               vd.duration,
+               v.id,
+               v.name,
+               vv.url as videoUrl,
+               vv.id as videoId
+        from vod_detail vd
+                 right join dy_movies.vod v on vd.vid = v.vid and v.flag = vd.flag
+                 left join dy_movies.vod_video vv on v.vid = vv.vid and v.flag = vv.flag
+        where v.id = #{id}
+        limit 1
+    </select>
+</mapper>

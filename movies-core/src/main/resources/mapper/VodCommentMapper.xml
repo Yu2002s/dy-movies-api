@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.mapper.VodCommentMapper">
+
+    <resultMap id="commentMap" type="xyz.jdynb.dymovies.entity.VodComment">
+        <id property="id" column="comment_id"/>
+        <result property="uid" column="uid"/>
+        <result property="detailId" column="detail_id" />
+        <result property="content" column="comment_content"/>
+        <result property="createAt" column="comment_create_at"/>
+        <association property="user">
+            <id property="id" column="comment_user_id" />
+            <result property="username" column="comment_username" />
+            <result property="avatar" column="comment_avatar" />
+        </association>
+        <collection property="replyList" ofType="xyz.jdynb.dymovies.entity.VodReply">
+            <id column="reply_id" property="id" />
+            <result column="reply_content" property="content" />
+            <result column="reply_create_at" property="createAt" />
+            <association property="fromUser" javaType="xyz.jdynb.dymovies.entity.User">
+                <id property="id" column="from_reply_id" />
+                <result property="username" column="from_reply_username" />
+                <result property="avatar" column="from_reply_avatar" />
+            </association>
+            <association property="toUser" javaType="xyz.jdynb.dymovies.entity.User">
+                <id property="id" column="to_reply_id" />
+                <result property="username" column="to_reply_username" />
+                <result property="avatar" column="to_reply_avatar" />
+            </association>
+        </collection>
+    </resultMap>
+
+    <sql id="comment_column">
+        id
+        ,uid,detail_id,content,create_at,is_delete
+    </sql>
+    <select id="findList" resultMap="commentMap">
+        with comment_cte as (select c.id,
+                                    c.content,
+                                    c.uid,
+                                    c.create_at,
+                                    c.detail_id,
+                                    ROW_NUMBER() over () as comment_rn
+                             from vod_comment c
+                             where c.detail_id = #{detailId}
+                             order by c.create_at desc
+            limit #{pageOffset}
+           , #{pageSize} -- 提前限制评论数量
+            )
+           , reply_cte as (
+        select r.id, r.content, r.comment_id, r.from_uid, r.to_uid, r.create_at, ROW_NUMBER() over (partition by r.comment_id) as reply_rn
+        from vod_reply r
+            inner join comment_cte c
+        on r.comment_id = c.id
+            ),
+            filtered_reply as (
+        select *
+        from reply_cte
+        where reply_rn &lt;= 3
+            )
+        select c.id         as comment_id,
+               c.content    as comment_content,
+               c.create_at  as comment_create_at,
+               c.uid        as comment_user_id,
+               c.detail_id,
+               r.id         as reply_id,
+               r.content    as reply_content,
+               r.create_at  as reply_create_at,
+               cu.username  as comment_username,
+               cu.avatar    as comment_avatar,
+               fru.id       as from_reply_id,
+               fru.username as from_reply_username,
+               fru.avatar   as from_reply_avatar,
+               tru.id       as to_reply_id,
+               tru.username as to_reply_username,
+               tru.avatar   as to_reply_avatar
+        from comment_cte c
+                 left join filtered_reply r on c.id = r.comment_id
+                 left join user cu on c.uid = cu.id
+                 left join user fru on r.from_uid = fru.id
+                 left join user tru on r.to_uid = tru.id
+    </select>
+    <select id="countByDetailId" resultType="java.lang.Integer">
+        select count(*) from dy_movies.vod_comment where detail_id = #{detailId}
+    </select>
+</mapper>

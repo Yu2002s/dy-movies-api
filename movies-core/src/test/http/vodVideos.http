@@ -1,0 +1,2 @@
+### 获取某个影片的视频源列表
+GET {{host}}/vodVideos?name=混沌武士

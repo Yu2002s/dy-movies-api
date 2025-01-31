@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.mapper.TvLiveMapper">
+
+    <resultMap id="tvLiveMap" type="xyz.jdynb.dymovies.entity.TvLive">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="url" column="url" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="weight" column="weight" jdbcType="SMALLINT"/>
+            <result property="createAt" column="create_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,url,
+        status,weight,create_at
+    </sql>
+
+    <select id="findList" resultMap="tvLiveMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dy_movies.tv_live
+        where status = 1
+        order by weight
+    </select>
+</mapper>

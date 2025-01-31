@@ -1,0 +1,102 @@
+spring:
+  profiles:
+    active: @env@
+  application:
+    name: DyMovies
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/dy_movies?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: jdy200255
+  jackson:
+    # 去除为空的字段序列化
+    default-property-inclusion: non_null
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      # 每次启动时不初始化表，如果不设置为 never，每次启动都会初始化表，如果表结构有变化，需要先删除表再启动
+      initialize-schema: never
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceId: AUTO
+            instanceName: quartzScheduler
+            skipUpdateCheck: true # 跳过更新检查。生产部署要禁止
+          jobStore:
+            acquireTriggersWithinLock: true #获取trigger的时候是否上锁，默认false采用乐观锁，但有可能出现ABA导致重复调度
+            #此存储机制用于Quartz独立于应用容器的事务管理，如果是Tomcat容器管理的数据源，那我们定义的事物也不会传播给Quartz框架内部。
+            #通俗的讲就是不管我们的Service服务本身业务代码是否执行成功，只要代码中调用了Quartz API的数据库操作，那任务状态就永久持久化了，
+            #就算业务代码抛出运行时异常任务状态也不会回滚到之前的状态。与之相反的是JobStoreCMT。
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate #JDBC代理类
+            useProperties: true #让JDBCJobStore将JobDataMaps中的所有值都作为字符串，因此可以作为键值对存储而不是在BLOB列中以其序列化形式存储，从而避免序列化的版本问题
+            tablePrefix: QRTZ_ #数据库表前缀
+            misfireThreshold: 60_000 #超过这个时间还未触发的trigger，就被认为发生了misfire，默认60s。job成功触发叫fire，misfire就是未成功触发。
+            isClustered: true #是否开启群集，集群模式需要在多台服务器上做时间同步或者使用zookeeper去解决
+            clusterCheckinInterval: 20_000 #定义了Scheduler实例检入到数据库中的频率(单位：毫秒)。
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool #SimpleThreadPool这个线程池只是简单地在它的池中保持固定数量的线程，不增长也不缩小。但是它非常健壮且经过良好的测试，差不多每个Quartz用户都使用这个池
+            threadCount: 10 #最大线程数，意味着最多有多少个job可以同时执行
+            threadPriority: 5 #线程优先级
+            threadsInheritContextClassLoaderOfInitializingThread: true #线程上下文类加载器是否继承自初始线程的加载器
+          startup-delay: 60 #延时启动，要有足够长的时间让你的应用先启动完成后再让Scheduler启动（单位秒）
+          overwrite-existing-jobs: false #是否每次系统运行都会清空数据库中的Job信息，重新进行初始化
+  # 邮件
+  mail:
+    host: smtp.qq.com
+    username: 2475058223@qq.com
+    password: gaxazqyugagadihd
+    port: 465
+    protocol: smtp
+    ssl:
+      enabled: true
+    properties:
+      mail:
+        smtp:
+          ssl:
+            protocols: TLSv1.2
+  # 缓存
+  cache:
+    # 缓存类型
+    type: redis
+    redis:
+      # 不缓存空值
+      cache-null-values: false
+      # 缓存过期时间
+      time-to-live: 60s
+
+# mybatis 配置数据
+mybatis:
+  # 包别名配置
+  type-aliases-package: xyz.jdynb.dymovies.entity
+  configuration:
+    # 开启驼峰命名
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  # 设置 mapper 映射路径
+  mapper-locations:
+    - classpath:mapper/*.xml
+    - classpath*:com/**/mapper/*.xml
+
+# Jwt信息
+jwt:
+  # 密钥
+  key: jdy200255...
+  # 登录有效期
+  expired: 30d
+
+# AES加密信息
+aes:
+  transformation: AES/CBC/PKCS5Padding
+  key-size: 256
+  iterations: 65536
+  salt: "_o?~WG*l!{xaqd5Imbv^"
+  iv: "!W83P^$YFFk1&w1S"
+  password: "23*hHVh5Ec0o4M4!9i9AEx@68&h9J$MW"
+
+# 接口令牌密钥
+api-key: m8wZ0TSYN2
+# 是否验证token(接口)
+api-authentication: true

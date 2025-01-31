@@ -1,0 +1,11 @@
+### 搜索影片
+POST {{host}}/vodSearchs
+Content-Type: application/json
+Api-Key: m8wZ0TSYN2
+
+{
+  "page": 3,
+  "pageSize": 10,
+  "typeId": 0,
+  "keyword": "狂飙"
+}

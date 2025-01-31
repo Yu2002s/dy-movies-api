@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.mapper.VodSearchMapper">
+
+    <select id="findListByKeywordAndType" resultType="xyz.jdynb.dymovies.entity.VodDetail">
+        select v.id, v.vid, v.name, v.tid, v.flag, v.note, v.update_time, vd.pic, vd.year, vd.director, vd.lang,
+        vd.area, vd.actor
+        from dy_movies.vod v
+        left join dy_movies.vod_detail vd on v.vid = vd.vid and v.flag = vd.flag
+        where v.flag = #{flag} and name like concat('%', #{keyword}, '%')
+        <if test="typeId != null and typeId != 0">
+            and v.tid = #{typeId}
+        </if>
+        order by vd.year, v.update_time desc limit #{pageOffset}, #{pageSize}
+    </select>
+    <select id="countByKeywordAndType" resultType="java.lang.Integer">
+        select count(*)
+        from dy_movies.vod v
+        where v.flag = #{flag} and name like concat('%', #{keyword}, '%')
+        <if test="typeId != null and typeId != 0">
+            and v.tid = #{typeId}
+        </if>
+    </select>
+</mapper>

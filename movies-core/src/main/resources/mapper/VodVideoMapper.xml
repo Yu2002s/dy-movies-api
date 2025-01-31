@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.mapper.VodVideoMapper">
+
+    <resultMap id="BaseResultMap" type="xyz.jdynb.dymovies.entity.VodVideo">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="vid" column="vid" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,vid,name,
+        url
+    </sql>
+
+    <insert id="addBatch">
+        insert into dy_movies.vod_video (vid, name, url, flag) VALUES
+        <foreach collection="vodVideos" item="item" separator=",">
+            (#{item.vid},#{item.name},#{item.url},#{item.flag})
+        </foreach>
+    </insert>
+
+    <insert id="add">
+        insert into dy_movies.vod_video (vid, name, url, flag)
+        VALUES (#{vid}, #{name}, #{url}, #{flag})
+    </insert>
+    <update id="updateUrlById">
+        update dy_movies.vod_video set url = #{url} where id = #{id};
+    </update>
+
+    <select id="countByVid" resultType="int">
+        select count(*)
+        from dy_movies.vod_video
+        where vid = #{vid}
+    </select>
+
+    <select id="countByVidAndFlag" resultType="int">
+        select count(*)
+        from dy_movies.vod_video
+        where vid = #{vid}
+          and flag = #{flag}
+    </select>
+
+    <select id="findListByName" resultType="xyz.jdynb.dymovies.entity.VodVideo">
+        select vv.id, vv.vid, vv.name, vv.url, v.name vod_name, vv.flag
+        from dy_movies.vod_video vv
+                 left join dy_movies.vod v on vv.vid = v.vid and v.flag = vv.flag
+        where v.name = #{name}
+    </select>
+    <select id="findById" resultType="xyz.jdynb.dymovies.entity.VodVideo">
+        select id, vid, name, url, flag
+        from dy_movies.vod_video
+        where id = #{id};
+    </select>
+</mapper>

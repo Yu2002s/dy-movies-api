@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.mapper.VodBannerMapper">
+
+    <select id="findList" resultType="xyz.jdynb.dymovies.entity.VodBanner">
+        select v.id, v.vid, v.name, vd.pic, vd.des, v.note
+        from dy_movies.vod_banner vb
+                 left join dy_movies.vod v on vb.flag = v.flag and vb.vid = v.vid
+                 left join dy_movies.vod_detail vd on vb.flag = vd.flag and vb.vid = vd.vid
+        where vb.status = 1
+        order by vb.weight
+    </select>
+</mapper>

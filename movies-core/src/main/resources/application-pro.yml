@@ -1,0 +1,15 @@
+server:
+  # 生产环境运行端口
+  port: 8001
+spring:
+  quartz:
+    properties:
+      org:
+        quartz:
+          scheduler:
+            skipUpdateCheck: false # 跳过更新检查。生产部署要禁止
+
+# 配置日志信息
+logging:
+  file:
+    name: server.log

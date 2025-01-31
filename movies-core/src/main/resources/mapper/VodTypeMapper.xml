@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.mapper.VodTypeMapper">
+
+    <resultMap id="BaseResultMap" type="xyz.jdynb.dymovies.entity.VodType">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="flag" column="flag" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,flag
+    </sql>
+    <insert id="addBatch">
+        insert into dy_movies.vod_type (id, name,flag) values
+        <foreach collection="vodTypes" item="item" separator=",">
+            (#{item.id},#{item.name},#{item.flag})
+        </foreach>
+    </insert>
+    <select id="countByFlag" resultType="java.lang.Integer">
+        select count(id)
+        from dy_movies.vod_type
+        where flag = #{flag}
+    </select>
+    <select id="findList" resultMap="BaseResultMap">
+        select distinct name, id, name, flag
+        from dy_movies.vod_type
+    </select>
+    <select id="findListByFlag" resultMap="BaseResultMap">
+        select id, name, flag from dy_movies.vod_type
+        <where>
+            <if test="flag != null and flag != ''">
+                flag = #{flag} and
+            </if>
+            status = 1
+        </where>
+        order by weight
+    </select>
+
+    <select id="findAllByFlag" resultMap="BaseResultMap">
+        select id, name, flag
+        from dy_movies.vod_type
+        where flag = #{flag}
+        order by weight
+    </select>
+</mapper>

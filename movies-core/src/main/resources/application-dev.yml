@@ -1,0 +1,6 @@
+server:
+  # 本地开发使用 80 端口
+  port: 80
+logging:
+  level:
+    xyz.jdynb.dymovies.mapper: trace

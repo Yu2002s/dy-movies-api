@@ -1,0 +1,56 @@
+### 获取任务列表
+GET {{host}}/admin/jobs
+
+### 暂停所有任务
+POST {{host}}/admin/jobs/pauseAll
+
+### 恢复所有任务
+POST {{host}}/admin/jobs/resumeAll
+
+### 暂停指定任务
+PUT {{host}}/admin/jobs/pause
+Content-Type: application/json
+
+{
+  "name": "采集影片数据",
+  "group": "1080zyk"
+}
+
+### 恢复指定任务
+PUT {{host}}/admin/jobs/resume
+Content-Type: application/json
+
+{
+  "name": "量子资源影片列表",
+  "group": "lzm3u8"
+}
+
+### 删除任务
+DELETE {{host}}/admin/jobs
+Content-Type: application/json
+
+[
+  {
+    "name": "list",
+    "group": "1080zyk"
+  }
+]
+
+### 添加/修改任务
+POST {{host}}/admin/jobs
+Content-Type: application/json
+
+{
+  "name": "量子资源影片列表",
+  "group": "lzm3u8",
+  "cron": "0 54 15 * * ? ",
+  "jobClass": "xyz.jdynb.dymovies.job.CollectVodJob",
+  "desc": "量子资源列表采集",
+  "url": "https://cj.lziapi.com/api.php/provide/vod/from/lzm3u8/at/xml/"
+}
+
+### 获取 jobClass 列表
+GET {{host}}/admin/jobs/class
+
+### 获取组列表
+GET {{host}}/admin/jobs/group

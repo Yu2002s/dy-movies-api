@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.mapper.UserMapper">
+
+    <resultMap id="userMap" type="xyz.jdynb.dymovies.entity.User">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="createAt" column="create_at" jdbcType="TIMESTAMP"/>
+        <result property="updateAt" column="update_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="userColumn">
+        id,status,username,
+        email,password,avatar,
+        create_at,update_at
+    </sql>
+    <insert id="add">
+        insert into dy_movies.user (username, email, password, avatar, ip_addr)
+        VALUES (#{username}, #{email}, #{password}, #{avatar}, #{ipAddr})
+    </insert>
+    <update id="update">
+        update dy_movies.user
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="ipAddr != null">
+                ip_addr= #{ipAddr},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="findByEmail" resultMap="userMap">
+        select <include refid="userColumn" /> from dy_movies.user where email = #{email}
+    </select>
+</mapper>

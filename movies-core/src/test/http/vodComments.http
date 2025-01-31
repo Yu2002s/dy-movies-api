@@ -1,0 +1,2 @@
+### 获取评论列表
+GET {{host}}/vodComments/1000?pageSize=10&page=2
