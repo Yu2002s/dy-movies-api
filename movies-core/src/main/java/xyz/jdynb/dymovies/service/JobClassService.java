@@ -8,4 +8,9 @@ public interface JobClassService {
 
     List<JobClass> findAll();
 
+    void add(JobClass jobClass);
+
+    void update(JobClass jobClass);
+
+    void delete(long id);
 }

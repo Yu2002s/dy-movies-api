@@ -51,7 +51,7 @@
                v.create_time,
                d.pic as pic
         from dy_movies.vod v
-                 left join dy_movies.vod_detail d on v.vid = d.vid
+                 left join dy_movies.vod_detail d on v.vid = d.vid and v.flag = d.flag
         where v.flag = #{flag}
           and v.tid = #{typeId}
         order by v.update_time desc

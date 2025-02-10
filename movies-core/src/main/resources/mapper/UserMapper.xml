@@ -51,4 +51,7 @@
     <select id="findByEmail" resultMap="userMap">
         select <include refid="userColumn" /> from dy_movies.user where email = #{email}
     </select>
+    <select id="findById" resultType="xyz.jdynb.dymovies.entity.User">
+        select <include refid="userColumn" /> from dy_movies.user where id = #{id}
+    </select>
 </mapper>

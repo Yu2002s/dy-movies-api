@@ -21,4 +21,6 @@ public interface VodService {
     int count(String flag);
 
     Page<Vod> findListByTid(VodQueryParamsDto vodQueryParamsDto);
+
+
 }

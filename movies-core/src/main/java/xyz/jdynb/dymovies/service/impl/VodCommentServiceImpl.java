@@ -1,7 +1,6 @@
 package xyz.jdynb.dymovies.service.impl;
 
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.jdynb.dymovies.dto.VodCommentQueryParamsDto;
 import xyz.jdynb.dymovies.entity.VodComment;

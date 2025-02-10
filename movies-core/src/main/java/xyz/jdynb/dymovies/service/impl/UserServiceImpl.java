@@ -38,8 +38,8 @@ public class UserServiceImpl implements UserService {
     };
 
     @Override
-    public User findById() {
-        return null;
+    public User findById(Integer id) {
+        return userMapper.findById(id);
     }
 
     @Override

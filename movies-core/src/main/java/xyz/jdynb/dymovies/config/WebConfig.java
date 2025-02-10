@@ -37,6 +37,7 @@ public class WebConfig implements WebMvcConfigurer {
                     .addPathPatterns("/**");
         }
         registry.addInterceptor(userInterceptor)
-                .addPathPatterns("/admin/**");
+                .addPathPatterns("/admin/**")
+                .addPathPatterns("/users/**");
     }
 }

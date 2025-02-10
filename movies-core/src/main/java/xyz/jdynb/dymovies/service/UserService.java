@@ -4,7 +4,7 @@ import xyz.jdynb.dymovies.entity.User;
 
 public interface UserService {
 
-    User findById();
+    User findById(Integer id);
 
     User findByEmail(String email);
 

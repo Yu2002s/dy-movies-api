@@ -1,6 +1,9 @@
 package xyz.jdynb.dymovies.entity;
 
 import java.io.Serializable;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -17,6 +20,8 @@ public class JobClass implements Serializable {
     /**
      * 启动类名称
      */
+    @NotNull(message = "className不能为空")
+    @NotEmpty(message = "className不能为空")
     private String name;
 
     /**

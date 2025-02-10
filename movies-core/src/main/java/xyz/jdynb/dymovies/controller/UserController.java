@@ -1,13 +1,18 @@
 package xyz.jdynb.dymovies.controller;
 
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.jdynb.dymovies.anno.RequireLogin;
 import xyz.jdynb.dymovies.common.pojo.Result;
+import xyz.jdynb.dymovies.entity.User;
 import xyz.jdynb.dymovies.service.UserService;
 import xyz.jdynb.dymovies.vo.UserAuthVo;
 
@@ -52,5 +57,25 @@ public class UserController {
         String code = userService.sendCode(email);
         return code != null ? Result.success("验证码发送成功")
                 : Result.error("验证码发送失败");
+    }
+
+    /**
+     * 获取登录的用户
+     * @return 用户信息
+     */
+    @GetMapping
+    @RequireLogin
+    public Result<User> getLoginUser(HttpServletRequest request, HttpServletResponse response) {
+        Integer userId = (Integer) request.getAttribute(User.ID);
+        if (userId == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return Result.error("用户未登录");
+        }
+        User user = userService.findById(userId);
+        if (user == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return Result.error("用户不存在");
+        }
+        return Result.success(user);
     }
 }

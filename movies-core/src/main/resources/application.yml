@@ -9,9 +9,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: jdy200255
-  jackson:
+  # jackson:
     # 去除为空的字段序列化
-    default-property-inclusion: non_null
+    # default-property-inclusion:
   quartz:
     job-store-type: jdbc
     jdbc:

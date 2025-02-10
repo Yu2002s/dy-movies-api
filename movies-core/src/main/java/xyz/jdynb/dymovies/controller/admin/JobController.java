@@ -5,12 +5,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import xyz.jdynb.dymovies.common.pojo.Result;
 import xyz.jdynb.dymovies.config.SchedulerManager;
-import xyz.jdynb.dymovies.vo.SchedulerJobVo;
 import xyz.jdynb.dymovies.entity.JobClass;
 import xyz.jdynb.dymovies.pojo.SchedulerJob;
 import xyz.jdynb.dymovies.service.JobClassService;
-import xyz.jdynb.dymovies.service.VodProviderService;
 import xyz.jdynb.dymovies.validator.UpdateJobStatusGroup;
+import xyz.jdynb.dymovies.vo.SchedulerJobVo;
 
 import java.util.List;
 
@@ -23,9 +22,6 @@ public class JobController {
 
     @Resource
     private JobClassService jobClassService;
-
-    @Resource
-    private VodProviderService vodProviderService;
 
     @GetMapping
     public Result<List<SchedulerJobVo>> getJobs() {
@@ -77,5 +73,21 @@ public class JobController {
     @GetMapping("/class")
     public Result<List<JobClass>> getJobClass() {
         return Result.success(jobClassService.findAll());
+    }
+
+    @PostMapping("/class")
+    public Result<String> addOrJobClass(@Validated @RequestBody JobClass jobClass) {
+        if (jobClass.getId() == null) {
+            jobClassService.add(jobClass);
+        } else {
+            jobClassService.update(jobClass);
+        }
+        return Result.success();
+    }
+
+    @DeleteMapping("/class/{id}")
+    public Result<String> deleteJobClass(@PathVariable long id) {
+        jobClassService.delete(id);
+        return Result.success();
     }
 }

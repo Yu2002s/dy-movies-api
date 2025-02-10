@@ -18,4 +18,19 @@ public class JobClassServiceImpl implements JobClassService {
     public List<JobClass> findAll() {
         return jobClassMapper.findAll();
     }
+
+    @Override
+    public void add(JobClass jobClass) {
+        jobClassMapper.add(jobClass);
+    }
+
+    @Override
+    public void update(JobClass jobClass) {
+        jobClassMapper.update(jobClass);
+    }
+
+    @Override
+    public void delete(long id) {
+        jobClassMapper.delete(id);
+    }
 }
