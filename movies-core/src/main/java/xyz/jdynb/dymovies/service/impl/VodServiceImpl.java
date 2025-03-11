@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import xyz.jdynb.dymovies.dto.VodQueryParamsDto;
 import xyz.jdynb.dymovies.entity.Vod;
 import xyz.jdynb.dymovies.mapper.VodMapper;
-import xyz.jdynb.dymovies.pojo.Page;
+import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.VodConfigService;
 import xyz.jdynb.dymovies.service.VodService;
 import xyz.jdynb.dymovies.service.VodTypeService;
@@ -45,21 +45,25 @@ public class VodServiceImpl implements VodService {
     }
 
     @Override
-    public int countByTidAndFlag(Integer tid, String flag) {
-        return vodMapper.countByTidAndFlag(tid, flag);
-    }
-
-    @Override
     public int countByVidAndFlag(Integer id, String flag) {
         return vodMapper.countByVidAndFlag(id, flag);
     }
 
     @Override
-    public Page<Vod> findListByTid(VodQueryParamsDto vodQueryParamsDto) {
+    public Page<Vod> findListByType(VodQueryParamsDto vodQueryParamsDto) {
         String flag = vodConfigService.findFlag();
         vodQueryParamsDto.setFlag(flag);
-        // 获取总记录数
-        int total = vodMapper.countByTidAndFlag(vodQueryParamsDto.getTypeId(), flag);
+
+        int total;
+        // 有 pid 代表是有父级
+        if (vodQueryParamsDto.getPid() != null && vodQueryParamsDto.getPid() != 0) {
+            // 获取总记录数
+            // 直接通过tid进行获取
+            total = vodMapper.countByTidAndFlag(vodQueryParamsDto.getTid(), flag);
+        } else {
+            // 通过pid进行获取，此时是父级
+            total = vodMapper.countByPidAndFlag(vodQueryParamsDto.getTid(), flag);
+        }
         List<Vod> vodList = vodMapper.findListByTid(vodQueryParamsDto);
         return Page.of(vodQueryParamsDto.getPage(), total, vodQueryParamsDto.getPageSize(), vodList);
     }

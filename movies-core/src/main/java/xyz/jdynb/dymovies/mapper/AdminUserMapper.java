@@ -2,7 +2,7 @@ package xyz.jdynb.dymovies.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import xyz.jdynb.dymovies.entity.AdminUser;
-import xyz.jdynb.dymovies.pojo.LoginFrom;
+import xyz.jdynb.dymovies.vo.LoginFromVo;
 
 /**
 * @author Administrator
@@ -13,7 +13,7 @@ import xyz.jdynb.dymovies.pojo.LoginFrom;
 @Mapper
 public interface AdminUserMapper {
 
-    AdminUser findByUsernameAndPassword(LoginFrom loginFrom);
+    AdminUser findByUsernameAndPassword(LoginFromVo loginFromVo);
 
     AdminUser findById(Integer id);
 }

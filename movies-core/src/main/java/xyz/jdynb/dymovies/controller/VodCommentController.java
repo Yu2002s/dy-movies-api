@@ -4,10 +4,8 @@ import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 import xyz.jdynb.dymovies.dto.VodCommentQueryParamsDto;
 import xyz.jdynb.dymovies.entity.VodComment;
-import xyz.jdynb.dymovies.pojo.Page;
+import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.VodCommentService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/vodComments")

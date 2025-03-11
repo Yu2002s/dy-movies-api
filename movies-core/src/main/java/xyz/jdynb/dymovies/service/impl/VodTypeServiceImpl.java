@@ -37,8 +37,27 @@ public class VodTypeServiceImpl implements VodTypeService {
     }
 
     @Override
+    public List<VodType> findParentList() {
+        String flag = vodConfigService.findFlag();
+        return vodTypeMapper.findListByParent(flag);
+    }
+
+    @Override
     public List<VodType> findAll() {
         String flag = vodConfigService.findFlag();
-        return vodTypeMapper.findAllByFlag(flag);
+        List<VodType> vodTypes = vodTypeMapper.findAllByFlag(flag);
+        vodTypes.forEach(vodType -> {
+            List<VodType> children = vodType.getChildren();
+            if (children != null) {
+                children.add(0, new VodType(vodType.getId(), null, "全部", null));
+            }
+        });
+        return vodTypes;
+    }
+
+    @Override
+    public List<VodType> findListByPid(Integer pid) {
+        String flag = vodConfigService.findFlag();
+        return vodTypeMapper.findListByPid(flag, pid);
     }
 }

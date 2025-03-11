@@ -1,9 +1,9 @@
-package xyz.jdynb.dymovies.pojo;
+package xyz.jdynb.dymovies.vo;
 
 import lombok.Data;
 
 @Data
-public class LoginFrom {
+public class LoginFromVo {
 
     private String username;
 

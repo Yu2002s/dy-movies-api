@@ -1,10 +1,5 @@
 package xyz.jdynb.dymovies.job;
 
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import xyz.jdynb.dymovies.entity.Vod;
 import xyz.jdynb.dymovies.job.base.CollectType;
@@ -36,6 +31,7 @@ public class CollectJsonVodJob extends CollectVodJob {
             v.setUpdateTime(LocalDateTime.parse(vod.getTime(), formatter));
             v.setNote(vod.getRemark());
             v.setFlag(getFlag());
+            // setVodCate(v);
             return v;
         }).toList();
         addData(vodList, page);

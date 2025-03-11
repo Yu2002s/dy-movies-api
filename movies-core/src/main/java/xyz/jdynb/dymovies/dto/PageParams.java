@@ -1,4 +1,4 @@
-package xyz.jdynb.dymovies.pojo;
+package xyz.jdynb.dymovies.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

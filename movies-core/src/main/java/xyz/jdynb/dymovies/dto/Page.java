@@ -1,4 +1,4 @@
-package xyz.jdynb.dymovies.pojo;
+package xyz.jdynb.dymovies.dto;
 
 import lombok.Data;
 

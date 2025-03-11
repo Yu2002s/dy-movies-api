@@ -4,7 +4,6 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import xyz.jdynb.dymovies.config.HomeCate;
 import xyz.jdynb.dymovies.entity.VodBanner;
-import xyz.jdynb.dymovies.entity.VodDetail;
 import xyz.jdynb.dymovies.pojo.VodFeed;
 import xyz.jdynb.dymovies.service.HomeVodService;
 import xyz.jdynb.dymovies.service.VodBannerService;

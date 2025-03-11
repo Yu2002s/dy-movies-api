@@ -27,9 +27,14 @@ public class Vod implements Serializable {
     private String name;
 
     /**
-     * 影片分类id
+     * 影片类型id
      */
     private Integer tid;
+
+    /**
+     * 影片分类id
+     */
+    private Integer cid;
 
     /**
      * 影片图片

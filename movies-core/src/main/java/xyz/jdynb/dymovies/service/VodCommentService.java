@@ -2,9 +2,7 @@ package xyz.jdynb.dymovies.service;
 
 import xyz.jdynb.dymovies.dto.VodCommentQueryParamsDto;
 import xyz.jdynb.dymovies.entity.VodComment;
-import xyz.jdynb.dymovies.pojo.Page;
-
-import java.util.List;
+import xyz.jdynb.dymovies.dto.Page;
 
 public interface VodCommentService {
 

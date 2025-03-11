@@ -4,15 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.jdynb.dymovies.mapper.VodTypeMapper">
 
-    <resultMap id="BaseResultMap" type="xyz.jdynb.dymovies.entity.VodType">
+    <resultMap id="baseVopTypeMap" type="xyz.jdynb.dymovies.entity.VodType">
         <id property="id" column="id" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="flag" column="flag" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id,name,flag
-    </sql>
+    <resultMap id="vodTypeMap" type="xyz.jdynb.dymovies.entity.VodType">
+        <id property="id" column="parent_id" jdbcType="INTEGER"/>
+        <result property="name" column="pname" jdbcType="VARCHAR"/>
+        <!--<result property="pid" column="parent_id" jdbcType="INTEGER"/>-->
+        <collection property="children" ofType="xyz.jdynb.dymovies.entity.VodType">
+            <id property="id" column="cid" jdbcType="INTEGER"/>
+            <result column="cpid" property="pid" jdbcType="INTEGER"/>
+            <result column="cname" property="name" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
     <insert id="addBatch">
         insert into dy_movies.vod_type (id, name,flag) values
         <foreach collection="vodTypes" item="item" separator=",">
@@ -24,11 +32,13 @@
         from dy_movies.vod_type
         where flag = #{flag}
     </select>
-    <select id="findList" resultMap="BaseResultMap">
+    <select id="findList" resultMap="baseVopTypeMap">
         select distinct name, id, name, flag
         from dy_movies.vod_type
     </select>
-    <select id="findListByFlag" resultMap="BaseResultMap">
+
+
+    <select id="findListByFlag" resultMap="baseVopTypeMap">
         select id, name, flag from dy_movies.vod_type
         <where>
             <if test="flag != null and flag != ''">
@@ -39,10 +49,27 @@
         order by weight
     </select>
 
-    <select id="findAllByFlag" resultMap="BaseResultMap">
-        select id, name, flag
+    <select id="findAllByFlag" resultMap="vodTypeMap">
+        select p.id parent_id, p.pid ppid, p.name pname, c.id cid, c.pid cpid, c.name cname
+        from dy_movies.vod_type p
+                 left join dy_movies.vod_type c on p.id = c.pid
+        where p.flag = #{flag}
+          and p.status = 1
+          and p.pid is null
+        order by p.weight, c.weight
+    </select>
+    <select id="findListByParent" resultType="xyz.jdynb.dymovies.entity.VodType">
+        select id, name
         from dy_movies.vod_type
         where flag = #{flag}
+          and pid IS NULL
+    </select>
+    <select id="findListByPid" resultType="xyz.jdynb.dymovies.entity.VodType">
+        select id, name
+        from dy_movies.vod_type
+        where flag = #{flag}
+          and pid = #{pid}
+          and status = 1
         order by weight
     </select>
 </mapper>

@@ -8,8 +8,8 @@ import xyz.jdynb.dymovies.anno.RequireLogin;
 import xyz.jdynb.dymovies.common.pojo.Result;
 import xyz.jdynb.dymovies.entity.AdminUser;
 import xyz.jdynb.dymovies.entity.User;
-import xyz.jdynb.dymovies.pojo.LoginFrom;
-import xyz.jdynb.dymovies.pojo.Page;
+import xyz.jdynb.dymovies.vo.LoginFromVo;
+import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.admin.AdminUserService;
 import xyz.jdynb.dymovies.vo.UserAuthVo;
 
@@ -21,8 +21,8 @@ public class AdminUserController {
     private AdminUserService adminUserService;
 
     @PostMapping("/login")
-    public Result<UserAuthVo> login(@Validated @RequestBody LoginFrom loginFrom) {
-        AdminUser user = adminUserService.findByUsernameAndPassword(loginFrom);
+    public Result<UserAuthVo> login(@Validated @RequestBody LoginFromVo loginFromVo) {
+        AdminUser user = adminUserService.findByUsernameAndPassword(loginFromVo);
         return user != null
                 ? Result.success("登录成功", adminUserService.generateToken(user.getId()))
                 : Result.error("用户名或密码错误");

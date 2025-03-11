@@ -14,10 +14,6 @@
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="flag" column="flag" jdbcType="VARCHAR"/>
     </resultMap>
-
-    <sql id="Base_Column_List">
-        id,vid,name,tid,note,update_time,flag
-    </sql>
     <insert id="addBatch">
         insert into dy_movies.vod(vid, name,tid,note,update_time,flag) values
         <foreach collection="vodList" item="item" separator=",">
@@ -28,9 +24,18 @@
         insert into dy_movies.vod(vid, name, tid, note, update_time, flag)
         values (#{vid}, #{name}, #{tid}, #{note}, #{updateTime}, #{flag})
     </insert>
+    <update id="updateAllCate">
+
+    </update>
+    <select id="countByPidAndFlag" resultType="int">
+        select count(*)
+        from dy_movies.vod v
+        where flag = #{flag}
+        and tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{pid})
+    </select>
     <select id="countByTidAndFlag" resultType="int">
         select count(*)
-        from dy_movies.vod
+        from dy_movies.vod v
         where flag = #{flag}
           and tid = #{tid}
     </select>
@@ -53,7 +58,12 @@
         from dy_movies.vod v
                  left join dy_movies.vod_detail d on v.vid = d.vid and v.flag = d.flag
         where v.flag = #{flag}
-          and v.tid = #{typeId}
+          <if test="pid != null">
+              and v.tid = #{tid}
+          </if>
+          <if test="pid == null">
+              and v.tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{tid})
+          </if>
         order by v.update_time desc
         limit #{pageOffset}, #{pageSize}
     </select>

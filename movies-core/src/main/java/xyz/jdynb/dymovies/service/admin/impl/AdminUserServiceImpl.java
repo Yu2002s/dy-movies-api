@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import xyz.jdynb.dymovies.entity.AdminUser;
 import xyz.jdynb.dymovies.entity.User;
 import xyz.jdynb.dymovies.mapper.AdminUserMapper;
-import xyz.jdynb.dymovies.pojo.LoginFrom;
-import xyz.jdynb.dymovies.pojo.Page;
+import xyz.jdynb.dymovies.vo.LoginFromVo;
+import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.admin.AdminUserService;
 import xyz.jdynb.dymovies.utils.JwtUtils;
 import xyz.jdynb.dymovies.utils.MD5Utils;
@@ -29,9 +29,9 @@ public class AdminUserServiceImpl implements AdminUserService {
     private JwtUtils jwtUtils;
 
     @Override
-    public AdminUser findByUsernameAndPassword(LoginFrom loginFrom) {
-        loginFrom.setPassword(getPassword(loginFrom.getPassword()));
-        return adminUserMapper.findByUsernameAndPassword(loginFrom);
+    public AdminUser findByUsernameAndPassword(LoginFromVo loginFromVo) {
+        loginFromVo.setPassword(getPassword(loginFromVo.getPassword()));
+        return adminUserMapper.findByUsernameAndPassword(loginFromVo);
     }
 
     @Override

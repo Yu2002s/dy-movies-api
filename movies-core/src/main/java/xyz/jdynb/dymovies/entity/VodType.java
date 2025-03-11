@@ -1,9 +1,10 @@
 package xyz.jdynb.dymovies.entity;
 
-import java.io.Serializable;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * 影片类型表
@@ -11,11 +12,17 @@ import lombok.Data;
  */
 @AllArgsConstructor
 @Data
-public class VodType implements Serializable {
+@NoArgsConstructor
+public class VodType {
     /**
-     * 影片类型id
+     * 影片类型 id
      */
     private Integer id;
+
+    /**
+     * 父类 id
+     */
+    private Integer pid;
 
     /**
      * 类型名称
@@ -27,5 +34,15 @@ public class VodType implements Serializable {
      */
     private String flag;
 
-    private static final long serialVersionUID = 1L;
+    public VodType(Integer id, Integer pid, String name, String flag) {
+        this.id = id;
+        this.pid = pid;
+        this.name = name;
+        this.flag = flag;
+    }
+
+    /**
+     * 类型子集
+     */
+    private List<VodType> children = null;
 }

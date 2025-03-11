@@ -1,5 +1,6 @@
 ### 获取分类的影视
-GET {{host}}/vods/type/6?page=1&pageSize=10
+GET {{host}}/vods/type/6?page=1&pageSize=80
+Api-Key: m8wZ0TSYN2
 
 ### 获取影视详情
 GET {{host}}/vods/7463

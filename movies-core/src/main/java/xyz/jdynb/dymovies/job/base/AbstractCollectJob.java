@@ -1,6 +1,5 @@
 package xyz.jdynb.dymovies.job.base;
 
-import cn.hutool.http.HttpException;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -96,6 +95,7 @@ public abstract class AbstractCollectJob implements Job {
             if (getJobType() == CollectJobType.LIST) {
                 addVodTypes(collectData, group);
             }
+            initData(collectData, group);
 
             // 远程的最后一页
             int remotePageCount = collectData.getPageCount();
@@ -168,8 +168,8 @@ public abstract class AbstractCollectJob implements Job {
     /**
      * 添加影片类型
      *
-     * @param data xml 数据
-     * @param group   组
+     * @param data  xml 数据
+     * @param group 组
      */
     private void addVodTypes(CollectData data, String group) {
         if (data instanceof CollectXmlData xmlData) {
@@ -179,11 +179,18 @@ public abstract class AbstractCollectJob implements Job {
                     .stream()
                     .map(element -> {
                         Integer id = Integer.parseInt(element.attr("id"));
-                        return new VodType(id, element.text(), group);
+                        return new VodType(id, null, element.text(), group);
                     }).toList();
 
             if (vodTypeService.countByFlag(group) == 0) {
                 vodTypeService.addBatch(vodTypes);
+                log.info("[{}] 添加分类成功", group);
+            }
+        } else if (data instanceof CollectJsonData jsonData) {
+            List<CollectJsonData.VodType> types = jsonData.getTypes();
+            List<VodType> list = types.stream().map(vodType -> new VodType(vodType.getId(), vodType.getPid(), vodType.getName(), group)).toList();
+            if (vodTypeService.countByFlag(group) == 0) {
+                vodTypeService.addBatch(list);
                 log.info("[{}] 添加分类成功", group);
             }
         }
@@ -210,6 +217,7 @@ public abstract class AbstractCollectJob implements Job {
 
     /**
      * 获取采集类型
+     *
      * @return @href CollectType
      */
     protected abstract CollectType getCollectType();
@@ -285,4 +293,6 @@ public abstract class AbstractCollectJob implements Job {
         };
     }
 
+    protected void initData(CollectData data, String group) {
+    }
 }

@@ -1,0 +1,2 @@
+### 获取所有的分类
+GET http://{{host}}/vodTypes/parent

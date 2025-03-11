@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.groups.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.jdynb.dymovies.pojo.PageParams;
 import xyz.jdynb.dymovies.validator.VodSearchGroup;
 
 @EqualsAndHashCode(callSuper = true)
@@ -13,10 +12,20 @@ import xyz.jdynb.dymovies.validator.VodSearchGroup;
 public class VodQueryParamsDto extends PageParams {
 
     /**
+     * 父类型 id
+     */
+    private Integer pid;
+
+    /**
      * 类型id
      */
-    @NotNull(message = "typeId 不能为空", groups = Default.class)
-    private Integer typeId;
+    @NotNull(message = "tid 不能为空", groups = Default.class)
+    private Integer tid;
+
+    /**
+     * 类型 id 列表
+     */
+    // private Integer[] tids;
 
     /**
      * 标识

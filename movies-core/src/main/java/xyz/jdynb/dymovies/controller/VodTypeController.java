@@ -17,6 +17,15 @@ public class VodTypeController {
     @Resource
     private VodTypeService vodTypeService;
 
+    /**
+     * 获取父级分类类型
+     * @return 类型列表
+     */
+    @GetMapping("/parent")
+    public Result<List<VodType>> getParentVodTypes() {
+        return Result.success(vodTypeService.findParentList());
+    }
+
     @GetMapping
     public Result<List<VodType>> getVodTypes() {
         return Result.success(vodTypeService.findList());

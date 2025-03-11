@@ -6,7 +6,7 @@ import xyz.jdynb.dymovies.common.pojo.Result;
 import xyz.jdynb.dymovies.dto.VodQueryParamsDto;
 import xyz.jdynb.dymovies.entity.Vod;
 import xyz.jdynb.dymovies.entity.VodDetail;
-import xyz.jdynb.dymovies.pojo.Page;
+import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.VodDetailService;
 import xyz.jdynb.dymovies.service.VodService;
 
@@ -22,21 +22,23 @@ public class VodController {
 
     /**
      * 获取某个类型的视频列表
-     * @param tid 类型id
+     * @param tid 类型 id
      * @param page 页码
      * @param pageSize 每页数量
      * @return 每页数据
      */
     @GetMapping("/type/{tid}")
     public Result<Page<Vod>> getVodListByType(@PathVariable("tid") Integer tid,
+                                              Integer pid,
                                               @RequestParam(defaultValue = "1", required = false) Integer page,
                                               @RequestParam(defaultValue = "20", required = false) Integer pageSize) {
 
         VodQueryParamsDto vodQueryParamsDto = new VodQueryParamsDto();
         vodQueryParamsDto.setPage(page);
         vodQueryParamsDto.setPageSize(pageSize);
-        vodQueryParamsDto.setTypeId(tid);
-        return Result.success(vodService.findListByTid(vodQueryParamsDto));
+        vodQueryParamsDto.setTid(tid);
+        vodQueryParamsDto.setPid(pid);
+        return Result.success(vodService.findListByType(vodQueryParamsDto));
     }
 
     /**

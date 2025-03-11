@@ -10,15 +10,28 @@ import xyz.jdynb.dymovies.job.base.CollectJobType;
 import xyz.jdynb.dymovies.pojo.CollectData;
 import xyz.jdynb.dymovies.pojo.CollectXmlData;
 import xyz.jdynb.dymovies.service.VodService;
+import xyz.jdynb.dymovies.service.VodTypeService;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class CollectVodJob extends AbstractCollectJob {
 
+    /**
+     * 类型列表
+     */
+    // protected final Map<Integer, String> typeList = new HashMap<>();
+
+    protected final Map<Integer, Integer> typeMap = new HashMap<>();
+
     @Resource
     private VodService vodService;
+
+    @Resource
+    private VodTypeService vodTypeService;
 
     @Override
     protected int getLocalRecordCount(String flag) {
@@ -33,6 +46,16 @@ public class CollectVodJob extends AbstractCollectJob {
     @Override
     protected CollectJobType getJobType() {
         return CollectJobType.LIST;
+    }
+
+    @Override
+    protected void initData(CollectData data, String group) {
+        /*cateList.clear();
+        cateList.addAll(vodCateService.findAll());*/
+
+        /*typeMap.clear();
+        List<VodType> types = vodTypeService.findListByFlag(group);
+        types.forEach(vodType -> typeMap.put(vodType.getId(), vodType.getCid()));*/
     }
 
     @Override
@@ -51,6 +74,7 @@ public class CollectVodJob extends AbstractCollectJob {
             vod.setName(element.getElementsByTag("name").get(0).text());
             vod.setNote(element.getElementsByTag("note").get(0).text());
             vod.setFlag(getFlag());
+            // setVodCate(vod);
             return vod;
         }).toList();
         addData(vodList, page);
@@ -67,5 +91,18 @@ public class CollectVodJob extends AbstractCollectJob {
                 }
             });
         }
+    }
+
+    /**
+     * 设置分类
+     * @param vod 影片对象
+     */
+    public void setVodCate(Vod vod) {
+        if (typeMap.isEmpty()) {
+            return;
+        }
+        Integer tid = vod.getTid();
+        Integer cid = typeMap.get(tid);
+        vod.setCid(cid);
     }
 }

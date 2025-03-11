@@ -1,10 +1,10 @@
 package xyz.jdynb.dymovies.service;
 
-import xyz.jdynb.dymovies.pojo.VodParseUrl;
+import xyz.jdynb.dymovies.vo.VodParseUrlVo;
 
 public interface VodParserService {
 
-    VodParseUrl parseByVideoId(Integer id);
+    VodParseUrlVo parseByVideoId(Integer id);
 
-    VodParseUrl parseByVideoIdAndUrl(Integer id, String url);
+    VodParseUrlVo parseByVideoIdAndUrl(Integer id, String url);
 }

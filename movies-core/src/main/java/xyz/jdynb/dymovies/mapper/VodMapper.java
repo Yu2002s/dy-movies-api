@@ -24,10 +24,14 @@ public interface VodMapper {
 
     int countByTidAndFlag(Integer tid, String flag);
 
+    int countByPidAndFlag(Integer pid, String flag);
+
     @Select("select count(id) from dy_movies.vod where flag = #{flag}")
     int count(String flag);
 
     List<Vod> findListByTid(VodQueryParamsDto vodQueryParamsDto);
+
+    int updateAllCate();
 }
 
 

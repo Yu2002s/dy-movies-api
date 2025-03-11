@@ -2,15 +2,13 @@ package xyz.jdynb.dymovies.service;
 
 import xyz.jdynb.dymovies.dto.VodQueryParamsDto;
 import xyz.jdynb.dymovies.entity.Vod;
-import xyz.jdynb.dymovies.pojo.Page;
+import xyz.jdynb.dymovies.dto.Page;
 
 import java.util.List;
 
 public interface VodService {
 
     int countByVidAndFlag(Integer id, String flag);
-
-    int countByTidAndFlag(Integer tid, String flag);
 
     int add(Vod vod);
 
@@ -20,7 +18,6 @@ public interface VodService {
 
     int count(String flag);
 
-    Page<Vod> findListByTid(VodQueryParamsDto vodQueryParamsDto);
-
+    Page<Vod> findListByType(VodQueryParamsDto vodQueryParamsDto);
 
 }

@@ -10,17 +10,18 @@
         from dy_movies.vod v
         left join dy_movies.vod_detail vd on v.vid = vd.vid and v.flag = vd.flag
         where v.flag = #{flag} and name like concat('%', #{keyword}, '%')
-        <if test="typeId != null and typeId != 0">
-            and v.tid = #{typeId}
+        <if test="tid != null and tid != 0">
+            and v.tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{tid})
         </if>
         order by vd.year, v.update_time desc limit #{pageOffset}, #{pageSize}
     </select>
     <select id="countByKeywordAndType" resultType="java.lang.Integer">
         select count(*)
         from dy_movies.vod v
-        where v.flag = #{flag} and name like concat('%', #{keyword}, '%')
-        <if test="typeId != null and typeId != 0">
-            and v.tid = #{typeId}
+        where v.flag = #{flag}
+        <if test="tid != null and tid != 0">
+            and v.tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{tid})
         </if>
+        and name like concat('%', #{keyword}, '%')
     </select>
 </mapper>

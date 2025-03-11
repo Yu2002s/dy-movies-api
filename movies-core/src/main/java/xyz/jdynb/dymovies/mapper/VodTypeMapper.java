@@ -24,6 +24,10 @@ public interface VodTypeMapper {
     List<VodType> findListByFlag(String flag);
 
     List<VodType> findAllByFlag(String flag);
+
+    List<VodType> findListByParent(String flag);
+
+    List<VodType> findListByPid(String flag, Integer pid);
 }
 
 

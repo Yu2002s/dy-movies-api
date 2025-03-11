@@ -10,7 +10,11 @@ public interface VodTypeService {
 
     int addBatch(List<VodType> vodList);
 
+    List<VodType> findParentList();
+
     List<VodType> findList();
 
     List<VodType> findAll();
+
+    List<VodType> findListByPid(Integer pid);
 }

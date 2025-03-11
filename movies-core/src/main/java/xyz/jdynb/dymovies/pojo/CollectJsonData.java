@@ -17,6 +17,9 @@ public class CollectJsonData extends CollectData {
 
     private List<Vod> list;
 
+    @JsonProperty("class")
+    private List<VodType> types;
+
     @Data
     public static class Vod {
         @JsonProperty("vod_id")
@@ -53,5 +56,15 @@ public class CollectJsonData extends CollectData {
         private String videos;
         @JsonProperty("vod_content")
         private String desc;
+    }
+
+    @Data
+    public static class VodType {
+        @JsonProperty("type_id")
+        private Integer id;
+        @JsonProperty("type_pid")
+        private Integer pid;
+        @JsonProperty("type_name")
+        private String name;
     }
 }
