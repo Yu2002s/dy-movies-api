@@ -11,24 +11,42 @@
         <result property="url" column="url" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id,vid,name,
-        url
-    </sql>
-
     <insert id="addBatch">
-        insert into dy_movies.vod_video (vid, name, url, flag) VALUES
+        insert into dy_movies.vod_video_${flag} (vid, name, url, flag) VALUES
         <foreach collection="vodVideos" item="item" separator=",">
             (#{item.vid},#{item.name},#{item.url},#{item.flag})
         </foreach>
     </insert>
 
     <insert id="add">
-        insert into dy_movies.vod_video (vid, name, url, flag)
+        insert into dy_movies.vod_video_${flag} (vid, name, url, flag)
         VALUES (#{vid}, #{name}, #{url}, #{flag})
     </insert>
+    <update id="createTable">
+        create table dy_movies.vod_video_${flag}
+        (
+            id   int auto_increment comment '影片视频唯一id'
+                primary key,
+            vid  int          not null comment '影片关联id',
+            name varchar(200) not null comment '视频名称',
+            url  varchar(300) not null comment '视频播放地址',
+            flag varchar(20)  not null comment '唯一标识'
+        )
+            comment '影片视频信息';
+
+        create index vod_video_vid_index
+            on dy_movies.vod_video_${flag} (vid)
+            comment '影片关联id索引';
+    </update>
+    <select id="existTable" resultType="int">
+        select count(*)
+        from information_schema.TABLES
+        where TABLE_NAME = 'vod_video_${flag}'
+    </select>
     <update id="updateUrlById">
-        update dy_movies.vod_video set url = #{url} where id = #{id};
+        update dy_movies.vod_video_${flag}
+        set url = #{url}
+        where id = #{id}
     </update>
 
     <select id="countByVid" resultType="int">
@@ -39,20 +57,23 @@
 
     <select id="countByVidAndFlag" resultType="int">
         select count(*)
-        from dy_movies.vod_video
+        from dy_movies.vod_video_${flag}
         where vid = #{vid}
-          and flag = #{flag}
     </select>
 
     <select id="findListByName" resultType="xyz.jdynb.dymovies.entity.VodVideo">
-        select vv.id, vv.vid, vv.name, vv.url, v.name vod_name, vv.flag
-        from dy_movies.vod_video vv
-                 left join dy_movies.vod v on vv.vid = v.vid and v.flag = vv.flag
-        where v.name = #{name}
+        select vv.id, vv.vid, vv.name, vv.url, vv.flag
+        from dy_movies.vod_video vv left join dy_movies.vod_detail vd on vv.vid = vd.vid and vv.flag = vd.flag
+        where vd.name = #{name}
     </select>
     <select id="findById" resultType="xyz.jdynb.dymovies.entity.VodVideo">
         select id, vid, name, url, flag
-        from dy_movies.vod_video
-        where id = #{id};
+        from dy_movies.vod_video_${flag}
+        where id = #{id}
+    </select>
+    <select id="findByVid" resultType="xyz.jdynb.dymovies.entity.VodVideo">
+        select id, vid, name, url, flag
+        from dy_movies.vod_video_${flag}
+        where vid = #{vid}
     </select>
 </mapper>

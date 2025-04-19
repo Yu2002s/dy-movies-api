@@ -7,8 +7,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import xyz.jdynb.dymovies.anno.Cacheable;
 import xyz.jdynb.dymovies.utils.AesEncryption;
+
+import java.lang.invoke.MethodHandle;
+import java.lang.reflect.Method;
 
 /**
  * 校验请求合法性
@@ -32,6 +37,10 @@ public class ApiTokenInterceptor implements HandlerInterceptor {
         String time = request.getHeader("Time");
         String token = request.getHeader("Api-Token");
         String apiKey = request.getHeader("Api-Key");
+
+        Method method = ((HandlerMethod) handler).getMethod();
+        handleCache(method, request, response);
+
         // log.info("token verify: {} , {} , {}", time, apiKey, token);
         if (API_KEY.equals(apiKey)) {
             return true;
@@ -54,5 +63,26 @@ public class ApiTokenInterceptor implements HandlerInterceptor {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 对缓存进行处理
+     * @param method 请求的方法
+     * @param request 请求对象
+     * @param response 响应对象
+     */
+    private void handleCache(Method method, HttpServletRequest request, HttpServletResponse response) {
+        Cacheable cacheable = method.getAnnotation(Cacheable.class);
+        String platform = request.getHeader("Platform");
+        if (cacheable != null) {
+            boolean isCache = cacheable.value();
+            if (isCache && "android".equals(platform)) {
+                response.setHeader("Cache-Control", "max-age=120");
+            }
+        } else {
+            if ("android".equals(platform)) {
+                response.setHeader("Cache-Control", "max-age=120");
+            }
+        }
     }
 }

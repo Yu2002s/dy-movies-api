@@ -47,5 +47,13 @@ public class VodComment {
      */
     private Integer isDelete;
 
+    /**
+     * 回复列表
+     */
     private List<VodReply> replyList;
+    
+    /**
+     * 回复数量
+     */
+    private Integer replyCount;
 }

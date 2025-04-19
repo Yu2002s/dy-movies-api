@@ -5,7 +5,7 @@ spring:
     name: DyMovies
   # 数据源配置
   datasource:
-    url: jdbc:mysql://localhost:3306/dy_movies?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/dy_movies?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&allowMultiQueries=true&rewriteBatchedStatements=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: jdy200255
@@ -100,3 +100,6 @@ aes:
 api-key: m8wZ0TSYN2
 # 是否验证token(接口)
 api-authentication: true
+
+# 管理员验证码
+admin-verify-code: 200255

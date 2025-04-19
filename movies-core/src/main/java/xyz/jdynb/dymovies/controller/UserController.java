@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,9 @@ import xyz.jdynb.dymovies.vo.UserAuthVo;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
+    @Value("${admin-verify-code}")
+    private String adminVerifyCode;
 
     @Resource
     private UserService userService;
@@ -36,7 +40,7 @@ public class UserController {
                                     @Size(max = 6, message = "验证码不能超过6位") String code) {
         String cacheCode = userService.getCode(email);
         log.info("requestCode: {}, cacheCode: {}", code, cacheCode);
-        if (cacheCode == null || !cacheCode.equals(code)) {
+        if (!adminVerifyCode.equals(code) && (cacheCode == null || !cacheCode.equals(code))) {
             return Result.error("验证码错误");
         }
         String token = userService.getOrInsertUserByEmail(email, code);

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import xyz.jdynb.dymovies.entity.VodDetail;
 import xyz.jdynb.dymovies.entity.VodVideo;
 import xyz.jdynb.dymovies.job.base.AbstractCollectJob;
@@ -52,6 +53,10 @@ public class CollectVodDetailJob extends AbstractCollectJob {
         }
         List<VodDetail> vodDetails = videos.stream().map(element -> {
             VodDetail vodDetail = new VodDetail();
+            vodDetail.setName(getElementValue(element, "name"));
+            vodDetail.setTid(Integer.parseInt(element.getElementsByTag("tid").get(0).text()));
+            vodDetail.setNote(getElementValue(element, "note"));
+            vodDetail.setUpdateTime(getElementValue(element, "last"));
             vodDetail.setPic(getElementValue(element, "pic"));
             vodDetail.setVid(Integer.parseInt(element.getElementsByTag("id").get(0).text()));
             String year = element.getElementsByTag("year").get(0).text();
@@ -77,23 +82,32 @@ public class CollectVodDetailJob extends AbstractCollectJob {
         return videos.size();
     }
 
+    @Override
+    protected void initData(CollectData data, String group) {
+        if (!vodVideoService.existTable(group)) {
+            vodVideoService.createTable(group);
+            log.info("{}, vod_video 表不存在，正在创建分表: {}", group, "vod_video_" + group);
+        }
+    }
+
     /**
      * 添加数据到数据库
+     *
      * @param vodDetails 添加数据到数据库
-     * @param page 页码
+     * @param page       页码
      */
     public final void addData(List<VodDetail> vodDetails, int page) {
         // 这里判断只有数据为0（初始化时）或 page 大于（最大允许页数）时进行批量添加，不判断数据是否存在
         if (localRecordCount == 0 || page > MAX_ALLOWED_PAGE_COUNT) {
             vodDetailService.addBatch(vodDetails);
             // 遍历添加视频信息
-            vodDetails.forEach(vodDetail -> vodVideoService.addBatch(vodDetail.getVideos()));
+            vodDetails.forEach(vodDetail -> vodVideoService.addBatch(vodDetail.getVideos(), getFlag()));
         } else {
             vodDetails.forEach(vodDetail -> {
                 if (vodDetailService.countByVidAndFlag(vodDetail.getVid(), vodDetail.getFlag()) == 0) {
                     vodDetailService.add(vodDetail);
                     // 遍历添加视频信息
-                    vodVideoService.addBatch(vodDetail.getVideos());
+                    vodVideoService.addBatch(vodDetail.getVideos(), getFlag());
                 }
             });
         }
@@ -107,20 +121,33 @@ public class CollectVodDetailJob extends AbstractCollectJob {
 
             @Override
             public VodVideo apply(String s) {
-                String[] strings = s.split("\\$");
+                String[] strings = s.split("\\$+");
+                if (strings.length == 0) {
+                    // 需要过滤的
+                    return new VodVideo();
+                }
                 VodVideo vodVideo = new VodVideo();
                 if (strings.length == 1) {
                     vodVideo.setName(String.valueOf(index));
                     vodVideo.setUrl(strings[0]);
                 } else {
-                    vodVideo.setName(strings[0]);
-                    vodVideo.setUrl(strings[1]);
+                    for (String string : strings) {
+                        if (string.isBlank()) {
+                            continue;
+                        }
+                        if (string.startsWith("http")) {
+                            vodVideo.setUrl(string);
+                        } else {
+                            vodVideo.setName(string);
+                        }
+                    }
                 }
                 index++;
                 vodVideo.setVid(vid);
                 vodVideo.setFlag(flag);
                 return vodVideo;
             }
-        }).toList();
+        }).filter(vodVideo -> StringUtils.hasText(vodVideo.getUrl())
+                && StringUtils.hasText(vodVideo.getName())).toList();
     }
 }

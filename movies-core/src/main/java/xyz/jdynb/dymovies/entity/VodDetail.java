@@ -2,6 +2,7 @@ package xyz.jdynb.dymovies.entity;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Data;
@@ -9,6 +10,7 @@ import xyz.jdynb.dymovies.pojo.VodSource;
 
 /**
  * 影片详情表
+ *
  * @TableName vod_detail
  */
 @Data
@@ -22,6 +24,21 @@ public class VodDetail {
      * 影片关联id
      */
     private Integer vid;
+
+    /**
+     * 类型 id
+     */
+    private Integer tid;
+
+    /**
+     * 影片类型名称
+     */
+    private String type;
+
+    /**
+     * 备注信息
+     */
+    private String note;
 
     /**
      * 影片名称
@@ -68,18 +85,40 @@ public class VodDetail {
      */
     private String des;
 
-    private String hits;
-
-    private String score;
-
-    private String duration;
-
-    private Integer videoId;
+    /**
+     * 热度
+     */
+    private Integer hits;
 
     /**
-     * 视频地址
+     * 评分
      */
-    private String videoUrl;
+    private Float score;
+
+    /**
+     * 时长
+     */
+    private String duration;
+
+    /*
+     * 视频 id
+     private Integer videoId;
+     */
+
+    /*
+     * 视频地址
+     private String videoUrl;
+     */
+
+    /**
+     * 更新时间
+     */
+    private String updateTime;
+
+    /**
+     * 创建时间
+     */
+    private String createTime;
 
     /**
      * 采集需要的源列表

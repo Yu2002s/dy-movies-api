@@ -22,17 +22,18 @@ public class VodParserServiceImpl implements VodParserService {
     private VodVideoService vodVideoService;
 
     @Override
-    public VodParseUrlVo parseByVideoId(Integer id) {
-        VodVideo video = vodVideoService.findById(id);
+    public VodParseUrlVo parseByVideoId(Integer id, String flag) {
+        VodVideo video = vodVideoService.findById(id, flag);
         String videoUrl = video.getUrl();
-        return parseByVideoIdAndUrl(id, videoUrl);
+        return parseByVideoIdAndUrl(id, videoUrl, flag);
     }
 
     @Override
-    public VodParseUrlVo parseByVideoIdAndUrl(Integer id, String url) {
+    public VodParseUrlVo parseByVideoIdAndUrl(Integer id, String url, String flag) {
         if (url.endsWith(".m3u8")) {
             return new VodParseUrlVo(url);
         }
+        // TODO: 其他的情况下 ukm3u8
         try (HttpResponse response = HttpRequest.get(url).execute()) {
             String body = response.body();
             Pattern pattern = Pattern.compile("const url = \"(.+)\";");
@@ -47,7 +48,7 @@ public class VodParserServiceImpl implements VodParserService {
                 }
                 vodParseUrlVo.setUrl(host + group);
                 if (StringUtils.hasText(group)) {
-                    vodVideoService.updateUrlById(id, vodParseUrlVo.getUrl());
+                    vodVideoService.updateUrlById(id, vodParseUrlVo.getUrl(), flag);
                 }
                 return vodParseUrlVo;
             }

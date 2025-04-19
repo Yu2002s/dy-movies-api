@@ -7,12 +7,12 @@ import lombok.Getter;
  */
 @Getter
 public enum HomeCate {
-    UPDATE("update", "最近更新");
+    UPDATE(0, "最近更新");
 
-    final String cateId;
+    final Integer cateId;
     final String name;
 
-    HomeCate(String cateId, String name) {
+    HomeCate(Integer cateId, String name) {
         this.cateId = cateId;
         this.name = name;
     }

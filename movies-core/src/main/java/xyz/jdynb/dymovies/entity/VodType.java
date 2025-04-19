@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class VodType {
+public class VodType implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
+    
     /**
      * 影片类型 id
      */
@@ -39,6 +43,10 @@ public class VodType {
         this.pid = pid;
         this.name = name;
         this.flag = flag;
+    }
+
+    public boolean isChild() {
+        return children == null;
     }
 
     /**

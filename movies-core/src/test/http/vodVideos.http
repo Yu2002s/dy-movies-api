@@ -1,2 +1,3 @@
 ### 获取某个影片的视频源列表
-GET {{host}}/vodVideos?name=混沌武士
+GET {{host}}/vodVideos?name=千秋令
+Api-Key: m8wZ0TSYN2

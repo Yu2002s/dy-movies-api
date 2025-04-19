@@ -9,6 +9,10 @@ import xyz.jdynb.dymovies.pojo.CollectJsonData;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 弃用了。全部改用 DETAIL 类型采集全部影片数据
+ */
+@Deprecated
 @Slf4j
 public class CollectJsonVodJob extends CollectVodJob {
 

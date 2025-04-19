@@ -10,6 +10,7 @@
         <result property="detailId" column="detail_id" />
         <result property="content" column="comment_content"/>
         <result property="createAt" column="comment_create_at"/>
+        <result property="replyCount" column="reply_count"/>
         <association property="user">
             <id property="id" column="comment_user_id" />
             <result property="username" column="comment_username" />
@@ -17,6 +18,7 @@
         </association>
         <collection property="replyList" ofType="xyz.jdynb.dymovies.entity.VodReply">
             <id column="reply_id" property="id" />
+            <result column="reply_comment_id" property="commentId" />
             <result column="reply_content" property="content" />
             <result column="reply_create_at" property="createAt" />
             <association property="fromUser" javaType="xyz.jdynb.dymovies.entity.User">
@@ -32,10 +34,17 @@
         </collection>
     </resultMap>
 
-    <sql id="comment_column">
-        id
-        ,uid,detail_id,content,create_at,is_delete
-    </sql>
+    <insert id="add">
+        <choose>
+            <when test="commentId == null">
+                insert into vod_comment (uid, detail_id, content) values (#{fromUid}, #{detailId}, #{content})
+            </when>
+            <otherwise>
+                insert into vod_reply (comment_id, from_uid, to_uid, content) values (#{commentId}, #{fromUid}, #{toUid}, #{content})
+            </otherwise>
+        </choose>
+    </insert>
+
     <select id="findList" resultMap="commentMap">
         with comment_cte as (select c.id,
                                     c.content,
@@ -46,20 +55,26 @@
                              from vod_comment c
                              where c.detail_id = #{detailId}
                              order by c.create_at desc
-            limit #{pageOffset}
-           , #{pageSize} -- 提前限制评论数量
-            )
-           , reply_cte as (
-        select r.id, r.content, r.comment_id, r.from_uid, r.to_uid, r.create_at, ROW_NUMBER() over (partition by r.comment_id) as reply_rn
-        from vod_reply r
-            inner join comment_cte c
-        on r.comment_id = c.id
-            ),
-            filtered_reply as (
-        select *
-        from reply_cte
-        where reply_rn &lt;= 3
-            )
+                             limit #{pageOffset} , #{pageSize} -- 提前限制评论数量
+        )
+                ,
+             reply_cte as (select r.id,
+                                  r.content,
+                                  r.comment_id,
+                                  r.from_uid,
+                                  r.to_uid,
+                                  r.create_at,
+                                  ROW_NUMBER() over (partition by r.comment_id order by r.create_at desc) as reply_rn
+                           from vod_reply r
+                                    inner join comment_cte c
+                                               on r.comment_id = c.id),
+             filtered_reply as (select *
+                                from reply_cte
+                                where reply_rn &lt;= 3),
+             reply_count as (select comment_id, count(*) as reply_count
+                             from vod_reply r
+                             inner join comment_cte c on r.comment_id = c.id
+                             group by comment_id)
         select c.id         as comment_id,
                c.content    as comment_content,
                c.create_at  as comment_create_at,
@@ -68,6 +83,7 @@
                r.id         as reply_id,
                r.content    as reply_content,
                r.create_at  as reply_create_at,
+               r.comment_id as reply_comment_id,
                cu.username  as comment_username,
                cu.avatar    as comment_avatar,
                fru.id       as from_reply_id,
@@ -75,12 +91,14 @@
                fru.avatar   as from_reply_avatar,
                tru.id       as to_reply_id,
                tru.username as to_reply_username,
-               tru.avatar   as to_reply_avatar
+               tru.avatar   as to_reply_avatar,
+               COALESCE(rc.reply_count, 0) as reply_count
         from comment_cte c
                  left join filtered_reply r on c.id = r.comment_id
                  left join user cu on c.uid = cu.id
                  left join user fru on r.from_uid = fru.id
                  left join user tru on r.to_uid = tru.id
+                 left join reply_count rc on c.id = rc.comment_id
     </select>
     <select id="countByDetailId" resultType="java.lang.Integer">
         select count(*) from dy_movies.vod_comment where detail_id = #{detailId}

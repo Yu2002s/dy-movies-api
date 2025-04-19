@@ -26,7 +26,9 @@ public class CollectJsonVodDetailJob extends CollectVodDetailJob {
             vodDetail.setDes(vod.getDesc());
             vodDetail.setArea(vod.getArea());
             vodDetail.setYear(vod.getYear());
-            // vodDetail.setFlag(vod.getFlag());
+            vodDetail.setTid(vod.getTypeId());
+            vodDetail.setNote(vod.getRemark());
+            vodDetail.setUpdateTime(vod.getTime());
             vodDetail.setFlag(getFlag());
             vodDetail.setLang(vod.getLang());
             vodDetail.setPic(vod.getPic());

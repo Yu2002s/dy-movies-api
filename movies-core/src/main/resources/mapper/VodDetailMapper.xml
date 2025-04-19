@@ -7,6 +7,8 @@
     <resultMap id="vodDetailMap" type="xyz.jdynb.dymovies.entity.VodDetail">
         <id property="id" column="id" jdbcType="INTEGER"/>
         <result property="vid" column="vid" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="note" column="note" jdbcType="VARCHAR"/>
         <result property="pic" column="pic" jdbcType="VARCHAR"/>
         <result property="lang" column="lang" jdbcType="VARCHAR"/>
         <result property="area" column="area" jdbcType="VARCHAR"/>
@@ -15,37 +17,25 @@
         <result property="director" column="director" jdbcType="VARCHAR"/>
         <result property="des" column="des" jdbcType="VARCHAR"/>
         <result property="flag" column="flag" jdbcType="VARCHAR"/>
-        <result property="name" column="name" jdbcType="VARCHAR" />
-        <result property="videoUrl" column="videoUrl" jdbcType="VARCHAR" />
-        <result property="videoId" column="videoId" javaType="INTEGER" />
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="hits" column="hits" jdbcType="INTEGER"/>
+        <result property="score" column="score" jdbcType="DECIMAL"/>
+        <result property="tid" column="tid" jdbcType="INTEGER"/>
     </resultMap>
 
-    <resultMap id="detailMap" type="xyz.jdynb.dymovies.entity.VodDetail" extends="vodDetailMap">
-        <!--<association property="vod" javaType="xyz.jdynb.dymovies.entity.Vod">
-            <id column="vid" property="id" />
-            <result column="name" property="name" />
-            <result column="note" property="note" />
-        </association>-->
-        <!--<collection property="videos" ofType="xyz.jdynb.dymovies.entity.VodVideo">
-            <result column="videoUrl" property="url"/>
-            <result column="videoName" property="name" />
-        </collection>-->
-    </resultMap>
-
-    <sql id="Base_Column_List">
-        id,vid,pic,
-        lang,area,year,
-        actor,director,des,flag
-    </sql>
     <insert id="addBatch">
-        insert into dy_movies.vod_detail (vid, pic, lang, area, year, actor, director, des, flag, hits, score, duration) VALUES
+        insert into dy_movies.vod_detail (vid, tid, name, note, pic, lang, area, year, actor, director, des, flag, hits,
+        score,
+        duration, update_time) VALUES
         <foreach collection="vodDetails" item="item" separator=",">
-            (#{item.vid},#{item.pic},#{item.lang},#{item.area},#{item.year},#{item.actor},#{item.director},#{item.des},#{item.flag},#{item.hits},#{item.score},#{item.duration})
+            (#{item.vid},#{item.tid},#{item.name},#{item.note},#{item.pic},#{item.lang},#{item.area},#{item.year},#{item.actor},#{item.director},#{item.des},#{item.flag},#{item.hits},#{item.score},#{item.duration},#{item.updateTime})
         </foreach>
     </insert>
     <insert id="add">
-        insert into dy_movies.vod_detail (vid, pic, lang, area, year, actor, director, des, flag, hits, score, duration)
-        values (#{vid}, #{pic}, #{lang}, #{area}, #{year}, #{actor}, #{director}, #{des}, #{flag},#{hits},#{score},#{duration})
+        insert into dy_movies.vod_detail (vid, tid, name, note, pic, lang, area, year, actor, director, des, flag, hits,
+                                          score, duration, update_time)
+        values (#{vid}, #{tid}, #{name}, #{note}, #{pic}, #{lang}, #{area}, #{year}, #{actor}, #{director}, #{des},
+                #{flag}, #{hits}, #{score}, #{duration}, #{updateTime})
     </insert>
     <select id="countByVidAndFlag" resultType="int">
         select count(*)
@@ -59,7 +49,11 @@
         where flag = #{flag}
     </select>
     <select id="findById" resultMap="vodDetailMap">
-        select vd.vid,
+        select vd.id,
+               vd.vid,
+               vd.tid,
+               vd.note,
+               vd.name,
                vd.flag,
                vd.actor,
                vd.area,
@@ -69,16 +63,29 @@
                vd.pic,
                vd.year,
                vd.hits,
-               vd.score,
-               vd.duration,
-               v.id,
-               v.name,
-               vv.url as videoUrl,
-               vv.id as videoId
+               vd.score
         from vod_detail vd
-                 right join dy_movies.vod v on vd.vid = v.vid and v.flag = vd.flag
-                 left join dy_movies.vod_video vv on v.vid = vv.vid and v.flag = vv.flag
-        where v.id = #{id}
+        where vd.id = #{id}
         limit 1
     </select>
+    <!--<select id="findListByTid" resultMap="vodMap">
+        select v.id,
+        v.vid,
+        v.name,
+        v.tid,
+        v.note,
+        v.flag,
+        v.create_time,
+        v.pic
+        from dy_movies.vod_detail v
+        where v.flag = #{flag}
+        <if test="pid != null">
+            and v.tid = #{tid}
+        </if>
+        <if test="pid == null">
+            and v.tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{tid})
+        </if>
+        order by v.update_time desc
+        limit #{pageOffset}, #{pageSize}
+    </select>-->
 </mapper>

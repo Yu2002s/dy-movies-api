@@ -14,19 +14,25 @@ import java.util.List;
 @Mapper
 public interface VodVideoMapper {
 
+    void createTable(String flag);
+
+    int existTable(String flag);
+
     int countByVid(Integer vid);
 
     int countByVidAndFlag(Integer vid, String flag);
 
-    int addBatch(List<VodVideo> vodVideos);
+    int addBatch(List<VodVideo> vodVideos, String flag);
 
-    void add(VodVideo vodVideo);
+    void add(VodVideo vodVideo, String flag);
 
     List<VodVideo> findListByName(String name);
 
-    VodVideo findById(Integer id);
+    VodVideo findById(Integer id, String flag);
 
-    void updateUrlById(Integer id, String url);
+    List<VodVideo> findByVid(Integer vid, String flag);
+
+    void updateUrlById(Integer id, String url, String flag);
 }
 
 

@@ -1,6 +1,7 @@
 package xyz.jdynb.dymovies.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import xyz.jdynb.dymovies.dto.VodCommentAddParamsDto;
 import xyz.jdynb.dymovies.dto.VodCommentQueryParamsDto;
 import xyz.jdynb.dymovies.entity.VodComment;
 
@@ -18,6 +19,8 @@ public interface VodCommentMapper {
     int countByDetailId(Integer detailId);
 
     List<VodComment> findList(VodCommentQueryParamsDto vodCommentQueryParamsDto);
+
+    int add(VodCommentAddParamsDto params);
 }
 
 

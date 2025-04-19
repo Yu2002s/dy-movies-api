@@ -2,8 +2,10 @@ package xyz.jdynb.dymovies.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import xyz.jdynb.dymovies.dto.VodLatestQueryParamsDto;
 import xyz.jdynb.dymovies.dto.VodQueryParamsDto;
 import xyz.jdynb.dymovies.entity.Vod;
+import xyz.jdynb.dymovies.entity.VodDetail;
 
 import java.util.List;
 
@@ -32,6 +34,9 @@ public interface VodMapper {
     List<Vod> findListByTid(VodQueryParamsDto vodQueryParamsDto);
 
     int updateAllCate();
+
+    List<Vod> findLast(VodLatestQueryParamsDto params);
+
 }
 
 

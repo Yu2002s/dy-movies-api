@@ -4,6 +4,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import xyz.jdynb.dymovies.entity.VodDetail;
+import xyz.jdynb.dymovies.entity.VodVideo;
 import xyz.jdynb.dymovies.mapper.VodDetailMapper;
 import xyz.jdynb.dymovies.service.VodDetailService;
 import xyz.jdynb.dymovies.service.VodParserService;
@@ -46,9 +47,15 @@ public class VodDetailServiceImpl implements VodDetailService {
 
     @Override
     public VodDetail findById(Integer id) {
-        /*if (!vodDetail.getVideoUrl().endsWith(".m3u8")) {
-            String videoUrl = vodParserService.parseByVideoIdAndUrl(vodDetail.getVideoId(), vodDetail.getVideoUrl()).getUrl();
-            vodDetail.setVideoUrl(videoUrl);
+        /*VodDetail vodDetail = vodDetailMapper.findById(id);
+        if (vodDetail != null) {
+            List<VodVideo> vodVideos = vodVideoService.findByVid(vodDetail.getVid(), vodDetail.getFlag());
+            if (!vodVideos.isEmpty()) {
+                vodDetail.setVideos(vodVideos);
+                VodVideo vodVideo = vodVideos.get(0);
+                vodDetail.setVideoId(vodVideo.getId());
+                vodDetail.setVideoUrl(vodVideo.getUrl());
+            }
         }*/
         return vodDetailMapper.findById(id);
     }

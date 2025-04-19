@@ -5,19 +5,18 @@
 <mapper namespace="xyz.jdynb.dymovies.mapper.VodSearchMapper">
 
     <select id="findListByKeywordAndType" resultType="xyz.jdynb.dymovies.entity.VodDetail">
-        select v.id, v.vid, v.name, v.tid, v.flag, v.note, v.update_time, vd.pic, vd.year, vd.director, vd.lang,
-        vd.area, vd.actor
-        from dy_movies.vod v
-        left join dy_movies.vod_detail vd on v.vid = vd.vid and v.flag = vd.flag
-        where v.flag = #{flag} and name like concat('%', #{keyword}, '%')
+        select v.id, v.vid, v.name, v.tid, v.flag, v.note, v.update_time, v.pic, v.year, v.director, v.lang,
+        v.area, v.actor, v.year
+        from dy_movies.vod_detail v
+        where v.flag = #{flag} and v.name like concat('%', #{keyword}, '%')
         <if test="tid != null and tid != 0">
             and v.tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{tid})
         </if>
-        order by vd.year, v.update_time desc limit #{pageOffset}, #{pageSize}
+        order by v.year, v.update_time desc limit #{pageOffset}, #{pageSize}
     </select>
     <select id="countByKeywordAndType" resultType="java.lang.Integer">
         select count(*)
-        from dy_movies.vod v
+        from dy_movies.vod_detail v
         where v.flag = #{flag}
         <if test="tid != null and tid != 0">
             and v.tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{tid})

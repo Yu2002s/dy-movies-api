@@ -94,6 +94,9 @@ public abstract class AbstractCollectJob implements Job {
             // 添加影片分类数据
             if (getJobType() == CollectJobType.LIST) {
                 addVodTypes(collectData, group);
+                log.info("[{}][{}] 采集类型完成...", group, getJobType().name);
+                // LIST 弃用，不进行采集了，全部整合到 DETAIL 中
+                return;
             }
             initData(collectData, group);
 

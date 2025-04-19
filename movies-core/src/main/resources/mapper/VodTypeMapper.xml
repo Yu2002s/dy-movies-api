@@ -22,9 +22,9 @@
     </resultMap>
 
     <insert id="addBatch">
-        insert into dy_movies.vod_type (id, name,flag) values
+        insert into dy_movies.vod_type (id, name,flag,pid) values
         <foreach collection="vodTypes" item="item" separator=",">
-            (#{item.id},#{item.name},#{item.flag})
+            (#{item.id},#{item.name},#{item.flag},#{item.pid})
         </foreach>
     </insert>
     <select id="countByFlag" resultType="java.lang.Integer">

@@ -2,11 +2,15 @@ package xyz.jdynb.dymovies.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 影片轮播 banner
  */
 @Data
-public class VodBanner {
+public class VodBanner implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Integer id;
 

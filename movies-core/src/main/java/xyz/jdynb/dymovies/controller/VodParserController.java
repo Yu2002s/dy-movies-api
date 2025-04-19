@@ -17,7 +17,7 @@ public class VodParserController {
     private VodParserService vodParserService;
 
     @GetMapping("{id}")
-    public Result<VodParseUrlVo> parseVideo(@PathVariable("id") Integer id) {
-        return Result.success(vodParserService.parseByVideoId(id));
+    public Result<VodParseUrlVo> parseVideo(@PathVariable("id") Integer id, String flag) {
+        return Result.success(vodParserService.parseByVideoId(id, flag));
     }
 }

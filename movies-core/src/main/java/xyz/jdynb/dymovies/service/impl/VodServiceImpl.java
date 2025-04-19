@@ -2,8 +2,10 @@ package xyz.jdynb.dymovies.service.impl;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import xyz.jdynb.dymovies.dto.VodLatestQueryParamsDto;
 import xyz.jdynb.dymovies.dto.VodQueryParamsDto;
 import xyz.jdynb.dymovies.entity.Vod;
+import xyz.jdynb.dymovies.entity.VodDetail;
 import xyz.jdynb.dymovies.mapper.VodMapper;
 import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.VodConfigService;
@@ -11,6 +13,9 @@ import xyz.jdynb.dymovies.service.VodService;
 import xyz.jdynb.dymovies.service.VodTypeService;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 @Service
 public class VodServiceImpl implements VodService {
@@ -66,5 +71,22 @@ public class VodServiceImpl implements VodService {
         }
         List<Vod> vodList = vodMapper.findListByTid(vodQueryParamsDto);
         return Page.of(vodQueryParamsDto.getPage(), total, vodQueryParamsDto.getPageSize(), vodList);
+    }
+
+    @Override
+    public List<Vod> findLast(int pageSize) {
+        return findLast(pageSize, null);
+    }
+
+    @Override
+    public List<Vod> findLast(int pageSize, Integer typeId) {
+        return findLast(VodLatestQueryParamsDto.create(typeId, pageSize));
+    }
+
+    @Override
+    public List<Vod> findLast(VodLatestQueryParamsDto vodLatestQueryParamsDto) {
+        String flag = vodConfigService.findFlag();
+        vodLatestQueryParamsDto.setFlag(flag);
+        return vodMapper.findLast(vodLatestQueryParamsDto);
     }
 }

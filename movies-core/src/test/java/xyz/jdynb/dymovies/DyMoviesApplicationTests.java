@@ -6,8 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.StringUtils;
+import xyz.jdynb.dymovies.entity.VodVideo;
 import xyz.jdynb.dymovies.service.VodService;
 import xyz.jdynb.dymovies.utils.MD5Utils;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 
 @SpringBootTest
 @Slf4j
@@ -28,8 +34,53 @@ class DyMoviesApplicationTests {
     @Value("${jwt.key}")
     private String SALT;
 
+    public final List<VodVideo> parseVodVideo(String videosUrl, Integer vid, String flag) {
+        String[] v = videosUrl.split("#");
+        return Arrays.stream(v).map(new Function<String, VodVideo>() {
+
+            private int index = 1;
+
+            @Override
+            public VodVideo apply(String s) {
+                String[] strings = s.split("\\$+");
+                System.out.println(Arrays.toString(strings));
+                if (strings.length == 0) {
+                    // 需要过滤的
+                    return new VodVideo();
+                }
+                VodVideo vodVideo = new VodVideo();
+                if (strings.length == 1) {
+                    vodVideo.setName(String.valueOf(index));
+                    vodVideo.setUrl(strings[0]);
+                } else {
+                    for (String string : strings) {
+                        if (string.isBlank()) {
+                            continue;
+                        }
+                        if (string.startsWith("http")) {
+                            vodVideo.setUrl(string);
+                        } else {
+                            vodVideo.setName(string);
+                        }
+                    }
+                }
+                index++;
+                vodVideo.setVid(vid);
+                vodVideo.setFlag(flag);
+                return vodVideo;
+            }
+        }).filter(vodVideo -> StringUtils.hasText(vodVideo.getUrl())
+                && StringUtils.hasText(vodVideo.getName())).toList();
+    }
+
     @Test
     void testCollect() throws Exception {
+
+        String url = "正片$https://ukzy.ukubf4.com/share/8iBBun8iaJQEXc9q#$$$正片$https://ukzy.ukubf4.com/20220415/nEkk92gf/index.m3u8";
+
+        List<VodVideo> vodVideos = parseVodVideo(url, 0, "");
+        System.out.println(vodVideos);
+
         /*Element videos = RSSUtils.getRssElement("https://cj.lziapi.com/api.php/provide/vod/from/lzm3u8/at/xml/?ac=detail&pg=4851");
 
         List<VodDetail> vodDetails = videos.children().stream().map(element -> {

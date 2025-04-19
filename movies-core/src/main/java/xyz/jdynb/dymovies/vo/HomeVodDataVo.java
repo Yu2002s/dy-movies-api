@@ -2,17 +2,23 @@ package xyz.jdynb.dymovies.vo;
 
 import lombok.Data;
 import xyz.jdynb.dymovies.entity.VodBanner;
-import xyz.jdynb.dymovies.pojo.VodFeed;
+import xyz.jdynb.dymovies.dto.VodFeedDto;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class HomeVodDataVo {
+public class HomeVodDataVo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Banner列表
+     * Banner 列表
      */
     private List<VodBanner> banners;
 
-    private List<VodFeed> feeds;
+    /**
+     * Feed 列表
+     */
+    private List<VodFeedDto> feeds;
 }

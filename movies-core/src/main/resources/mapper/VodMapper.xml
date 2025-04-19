@@ -4,11 +4,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.jdynb.dymovies.mapper.VodMapper">
 
+    <sql id="baseQuery">
+        select v.id,
+               v.vid,
+               v.name,
+               v.tid,
+               vt.name as type_name,
+               v.note,
+               v.update_time,
+               v.flag,
+               v.create_time,
+               v.pic
+        from dy_movies.vod_detail v
+                 left join dy_movies.vod_type vt on v.tid = vt.id and v.flag = vt.flag
+        where v.flag = #{flag}
+    </sql>
+
     <resultMap id="vodMap" type="xyz.jdynb.dymovies.entity.Vod">
         <id property="id" column="id" jdbcType="INTEGER"/>
         <result property="vid" column="vid" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="tid" column="tid" jdbcType="INTEGER"/>
+        <result property="type" column="type_name" jdbcType="VARCHAR" />
         <result property="pic" column="pic" jdbcType="VARCHAR"/>
         <result property="note" column="note" jdbcType="VARCHAR"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
@@ -29,13 +46,13 @@
     </update>
     <select id="countByPidAndFlag" resultType="int">
         select count(*)
-        from dy_movies.vod v
+        from dy_movies.vod_detail v
         where flag = #{flag}
         and tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{pid})
     </select>
     <select id="countByTidAndFlag" resultType="int">
         select count(*)
-        from dy_movies.vod v
+        from dy_movies.vod_detail
         where flag = #{flag}
           and tid = #{tid}
     </select>
@@ -46,18 +63,7 @@
           and vid = #{vid}
     </select>
     <select id="findListByTid" resultMap="vodMap">
-        select v.id,
-               v.vid,
-               v.name,
-               v.tid,
-               v.note,
-               v.update_time,
-               v.flag,
-               v.create_time,
-               d.pic as pic
-        from dy_movies.vod v
-                 left join dy_movies.vod_detail d on v.vid = d.vid and v.flag = d.flag
-        where v.flag = #{flag}
+        <include refid="baseQuery" />
           <if test="pid != null">
               and v.tid = #{tid}
           </if>
@@ -66,5 +72,12 @@
           </if>
         order by v.update_time desc
         limit #{pageOffset}, #{pageSize}
+    </select>
+    <select id="findLast" resultMap="vodMap">
+        <include refid="baseQuery"/>
+        <if test="typeId != null">
+            and tid = #{typeId}
+        </if>
+        order by v.update_time desc limit #{pageOffset},#{pageSize}
     </select>
 </mapper>

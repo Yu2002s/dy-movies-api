@@ -1,10 +1,13 @@
 package xyz.jdynb.dymovies.service;
 
+import xyz.jdynb.dymovies.dto.VodLatestQueryParamsDto;
 import xyz.jdynb.dymovies.dto.VodQueryParamsDto;
 import xyz.jdynb.dymovies.entity.Vod;
 import xyz.jdynb.dymovies.dto.Page;
+import xyz.jdynb.dymovies.entity.VodDetail;
 
 import java.util.List;
+import java.util.Map;
 
 public interface VodService {
 
@@ -20,4 +23,9 @@ public interface VodService {
 
     Page<Vod> findListByType(VodQueryParamsDto vodQueryParamsDto);
 
+    List<Vod> findLast(int pageSize);
+
+    List<Vod> findLast(int pageSize, Integer typeId);
+
+    List<Vod> findLast(VodLatestQueryParamsDto vodLatestQueryParamsDto);
 }

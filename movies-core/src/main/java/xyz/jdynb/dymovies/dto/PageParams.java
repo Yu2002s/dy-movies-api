@@ -13,13 +13,13 @@ public class PageParams {
      */
     @NotNull(message = "页码不能为空")
     @Min(value = 1, message = "页码最小为1")
-    private Integer page;
+    private Integer page = 1;
 
     /**
      * 每页条数
      */
     @Range(min = 5, max = 40, message = "每页条数范围在1-100之间")
-    private Integer pageSize;
+    private Integer pageSize = 10;
 
     /**
      * 获取偏移量

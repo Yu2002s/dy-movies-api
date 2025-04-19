@@ -3,12 +3,15 @@ package xyz.jdynb.dymovies.controller;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 import xyz.jdynb.dymovies.common.pojo.Result;
+import xyz.jdynb.dymovies.dto.VodLatestQueryParamsDto;
 import xyz.jdynb.dymovies.dto.VodQueryParamsDto;
 import xyz.jdynb.dymovies.entity.Vod;
 import xyz.jdynb.dymovies.entity.VodDetail;
 import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.VodDetailService;
 import xyz.jdynb.dymovies.service.VodService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/vods")
@@ -49,5 +52,11 @@ public class VodController {
     @GetMapping("/{id}")
     public Result<VodDetail> getVodById(@PathVariable("id") Integer id) {
         return Result.success(vodDetailService.findById(id));
+    }
+
+    @GetMapping("/latest")
+    public Result<List<Vod>> getLatestVods(@RequestParam(defaultValue = "1", required = false) int page,
+                                      @RequestParam(defaultValue = "20", required = false) int pageSize) {
+        return Result.success(vodService.findLast(VodLatestQueryParamsDto.create(null, page, pageSize)));
     }
 }

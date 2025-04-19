@@ -9,5 +9,4 @@ import xyz.jdynb.dymovies.entity.VodDetail;
 public class VodDetailVo extends VodDetail {
 
     private String videoUrl;
-
 }

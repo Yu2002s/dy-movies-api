@@ -47,11 +47,11 @@ public class CollectJsonData extends CollectData {
         @JsonProperty("vod_director")
         private String director;
         @JsonProperty("vod_hits")
-        private String hits;
+        private Integer hits;
         @JsonProperty("vod_duration")
         private String duration;
         @JsonProperty("vod_score")
-        private String score;
+        private Float score;
         @JsonProperty("vod_play_url")
         private String videos;
         @JsonProperty("vod_content")

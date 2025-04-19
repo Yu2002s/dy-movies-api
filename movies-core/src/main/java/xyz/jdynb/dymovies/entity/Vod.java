@@ -32,9 +32,9 @@ public class Vod implements Serializable {
     private Integer tid;
 
     /**
-     * 影片分类id
+     * 类型名称
      */
-    private Integer cid;
+    private String type;
 
     /**
      * 影片图片
