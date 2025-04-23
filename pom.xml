@@ -16,12 +16,14 @@
     <properties>
         <java.version>17</java.version>
         <movies.common.version>0.0.1-SNAPSHOT</movies.common.version>
+        <movies.admin.version>0.0.1-SNAPSHOT</movies.admin.version>
     </properties>
     <packaging>pom</packaging>
 
     <modules>
         <module>movies-common</module>
         <module>movies-core</module>
+        <module>movies-admin</module>
     </modules>
 
     <!-- 环境配置 -->
@@ -109,6 +111,11 @@
                 <groupId>xyz.jdynb</groupId>
                 <artifactId>movies-common</artifactId>
                 <version>${movies.common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.jdynb</groupId>
+                <artifactId>movies-admin</artifactId>
+                <version>${movies.admin.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

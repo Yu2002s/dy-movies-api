@@ -8,6 +8,7 @@ import xyz.jdynb.dymovies.anno.RequireLogin;
 import xyz.jdynb.dymovies.common.pojo.Result;
 import xyz.jdynb.dymovies.entity.AdminUser;
 import xyz.jdynb.dymovies.entity.User;
+import xyz.jdynb.dymovies.service.admin.AdminVerifyService;
 import xyz.jdynb.dymovies.vo.LoginFromVo;
 import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.admin.AdminUserService;
@@ -20,8 +21,17 @@ public class AdminUserController {
     @Resource
     private AdminUserService adminUserService;
 
+    @Resource
+    private AdminVerifyService adminVerifyService;
+
     @PostMapping("/login")
-    public Result<UserAuthVo> login(@Validated @RequestBody LoginFromVo loginFromVo) {
+    public Result<UserAuthVo> login(@Validated @RequestBody LoginFromVo loginFromVo, HttpServletRequest request) {
+        String sessionId = request.getSession().getId();
+        String code = adminVerifyService.getCode(sessionId);
+        if (loginFromVo.getCode() == null || !loginFromVo.getCode().equalsIgnoreCase(code)) {
+            return Result.error("验证码错误");
+        }
+        adminVerifyService.deleteCode(sessionId);
         AdminUser user = adminUserService.findByUsernameAndPassword(loginFromVo);
         return user != null
                 ? Result.success("登录成功", adminUserService.generateToken(user.getId()))

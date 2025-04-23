@@ -4,19 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.jdynb.dymovies.mapper.VodMapper">
 
-    <sql id="baseQuery">
+    <sql id="baseSelect">
         select v.id,
                v.vid,
                v.name,
                v.tid,
-               vt.name as type_name,
                v.note,
                v.update_time,
                v.flag,
                v.create_time,
                v.pic
+    </sql>
+
+    <sql id="baseQuery">
+        <include refid="baseSelect"/>
+        ,vt.name as type_name
         from dy_movies.vod_detail v
-                 left join dy_movies.vod_type vt on v.tid = vt.id and v.flag = vt.flag
+        left join dy_movies.vod_type vt on v.tid = vt.id and v.flag = vt.flag
         where v.flag = #{flag}
     </sql>
 
@@ -25,7 +29,7 @@
         <result property="vid" column="vid" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="tid" column="tid" jdbcType="INTEGER"/>
-        <result property="type" column="type_name" jdbcType="VARCHAR" />
+        <result property="type" column="type_name" jdbcType="VARCHAR"/>
         <result property="pic" column="pic" jdbcType="VARCHAR"/>
         <result property="note" column="note" jdbcType="VARCHAR"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
@@ -48,7 +52,7 @@
         select count(*)
         from dy_movies.vod_detail v
         where flag = #{flag}
-        and tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{pid})
+          and tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{pid})
     </select>
     <select id="countByTidAndFlag" resultType="int">
         select count(*)
@@ -63,13 +67,13 @@
           and vid = #{vid}
     </select>
     <select id="findListByTid" resultMap="vodMap">
-        <include refid="baseQuery" />
-          <if test="pid != null">
-              and v.tid = #{tid}
-          </if>
-          <if test="pid == null">
-              and v.tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{tid})
-          </if>
+        <include refid="baseQuery"/>
+        <if test="pid != null">
+            and v.tid = #{tid}
+        </if>
+        <if test="pid == null">
+            and v.tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{tid})
+        </if>
         order by v.update_time desc
         limit #{pageOffset}, #{pageSize}
     </select>
@@ -79,5 +83,11 @@
             and tid = #{typeId}
         </if>
         order by v.update_time desc limit #{pageOffset},#{pageSize}
+    </select>
+    <select id="findVid" resultType="java.lang.Integer">
+        select vid
+        from dy_movies.vod_detail
+        where id = #{id}
+          and flag = #{flag} limit 1
     </select>
 </mapper>

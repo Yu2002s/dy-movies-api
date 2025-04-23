@@ -63,7 +63,8 @@
 
     <select id="findListByName" resultType="xyz.jdynb.dymovies.entity.VodVideo">
         select vv.id, vv.vid, vv.name, vv.url, vv.flag
-        from dy_movies.vod_video vv left join dy_movies.vod_detail vd on vv.vid = vd.vid and vv.flag = vd.flag
+        from dy_movies.vod_video vv
+                 left join dy_movies.vod_detail vd on vv.vid = vd.vid and vv.flag = vd.flag
         where vd.name = #{name}
     </select>
     <select id="findById" resultType="xyz.jdynb.dymovies.entity.VodVideo">
@@ -75,5 +76,11 @@
         select id, vid, name, url, flag
         from dy_movies.vod_video_${flag}
         where vid = #{vid}
+    </select>
+    <select id="findListByNameAndFlag" resultType="xyz.jdynb.dymovies.entity.VodVideo">
+        select vv.id, vv.vid, vv.name, vv.url, vv.flag
+        from dy_movies.vod_detail vd
+                 left join dy_movies.vod_video_${flag} vv on vd.vid = vv.vid and vd.flag = vv.flag
+        where vd.flag = #{flag} and vd.name = #{name}
     </select>
 </mapper>

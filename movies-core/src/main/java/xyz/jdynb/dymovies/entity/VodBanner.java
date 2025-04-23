@@ -1,6 +1,8 @@
 package xyz.jdynb.dymovies.entity;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import xyz.jdynb.dymovies.validator.UpdateGroup;
 
 import java.io.Serializable;
 
@@ -22,5 +24,11 @@ public class VodBanner implements Serializable {
 
     private String note;
 
-    private String des;
+    private String flag;
+
+    private Integer status;
+
+    private Integer weight;
+
+    // private String des;
 }

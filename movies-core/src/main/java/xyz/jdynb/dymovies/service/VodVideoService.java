@@ -29,4 +29,8 @@ public interface VodVideoService {
     void updateUrlById(Integer id, String url, String flag);
 
     VodSourceVideoVo findSourcesAndVideos(Integer vid, String flag);
+
+    List<VodVideo> findByDetailId(Integer detailId, String flag);
+
+    List<VodVideo> findListByName(String name, String flag);
 }

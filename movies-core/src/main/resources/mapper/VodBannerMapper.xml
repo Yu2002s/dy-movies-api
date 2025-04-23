@@ -5,7 +5,7 @@
 <mapper namespace="xyz.jdynb.dymovies.mapper.VodBannerMapper">
 
     <select id="findList" resultType="xyz.jdynb.dymovies.entity.VodBanner">
-        select vd.id, vd.vid, vd.name, vd.pic, vd.des, vd.note
+        select vd.id, vd.vid, vd.name, vd.pic, vd.note
         from dy_movies.vod_banner vb
                  left join dy_movies.vod_detail vd on vb.flag = vd.flag and vb.vid = vd.vid
         where vb.status = 1

@@ -3,7 +3,7 @@ package xyz.jdynb.dymovies.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import xyz.jdynb.dymovies.config.VodFilterConfig;
+import xyz.jdynb.dymovies.enums.VodFilterConfig;
 import xyz.jdynb.dymovies.entity.VodType;
 
 import java.time.LocalDate;

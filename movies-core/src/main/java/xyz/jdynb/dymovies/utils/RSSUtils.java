@@ -5,7 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
-import xyz.jdynb.dymovies.config.RequestConfig;
+import xyz.jdynb.dymovies.constants.RequestConfig;
 import xyz.jdynb.dymovies.pojo.CollectXmlData;
 
 import java.io.IOException;

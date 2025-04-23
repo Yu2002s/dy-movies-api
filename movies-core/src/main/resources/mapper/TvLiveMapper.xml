@@ -23,6 +23,6 @@
         <include refid="Base_Column_List"/>
         from dy_movies.tv_live
         where status = 1
-        order by weight
+        order by weight desc
     </select>
 </mapper>

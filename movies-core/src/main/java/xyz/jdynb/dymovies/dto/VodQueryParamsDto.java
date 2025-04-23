@@ -5,8 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.groups.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import xyz.jdynb.dymovies.enums.SortBy;
 import xyz.jdynb.dymovies.validator.VodSearchGroup;
 
+/**
+ * 影片查询所需的一些参数
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class VodQueryParamsDto extends PageParams {
@@ -19,16 +23,11 @@ public class VodQueryParamsDto extends PageParams {
     /**
      * 类型id
      */
-    @NotNull(message = "tid 不能为空", groups = Default.class)
+    // @NotNull(message = "tid 不能为空", groups = Default.class)
     private Integer tid;
 
     /**
-     * 类型 id 列表
-     */
-    // private Integer[] tids;
-
-    /**
-     * 标识
+     * 标识（采集源标识）
      */
     private String flag;
 
@@ -38,4 +37,14 @@ public class VodQueryParamsDto extends PageParams {
     @NotNull(message = "请输入搜索关键字", groups = VodSearchGroup.class)
     @NotBlank(message = "搜索关键字不能为空", groups = VodSearchGroup.class)
     private String keyword;
+
+    /**
+     * 排序依赖
+     */
+    private SortBy sort;
+
+    /**
+     * 年份
+     */
+    private String year;
 }

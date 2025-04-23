@@ -10,7 +10,7 @@
     <artifactId>movies-core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>movies-core</name>
-    <description>movies-core</description>
+    <description>冬雨影视核心启动模块</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -20,6 +20,10 @@
         <dependency>
             <groupId>xyz.jdynb</groupId>
             <artifactId>movies-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>xyz.jdynb</groupId>
+            <artifactId>movies-admin</artifactId>
         </dependency>
         <!-- XML、HTML解析工具 -->
         <dependency>

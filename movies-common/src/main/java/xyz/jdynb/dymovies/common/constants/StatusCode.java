@@ -1,4 +1,4 @@
-package xyz.jdynb.dymovies.common.config;
+package xyz.jdynb.dymovies.common.constants;
 
 
 public class StatusCode {

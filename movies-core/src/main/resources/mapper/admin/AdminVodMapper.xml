@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.mapper.admin.AdminVodMapper">
+
+    <select id="findList" resultMap="xyz.jdynb.dymovies.mapper.VodMapper.vodMap">
+        <include refid="xyz.jdynb.dymovies.mapper.VodMapper.baseSelect"/>
+        from dy_movies.vod_detail v
+        <where>
+            <if test="tid != null">
+                and v.tid = #{tid}
+            </if>
+            <if test="flag != null and flag != ''">
+                and v.flag = #{flag}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                and v.name like concat('%', #{keyword}, '%')
+            </if>
+        </where>
+        order by v.create_time desc
+        limit #{pageOffset},#{pageSize}
+    </select>
+    <select id="count" resultType="int">
+        select count(*)
+        from dy_movies.vod_detail
+        <where>
+            <if test="tid != null">
+                tid = #{tid}
+            </if>
+            <if test="flag != null and flag != ''">
+                and flag = #{flag}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                and name = #{keyword}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -2,7 +2,7 @@ package xyz.jdynb.dymovies.common.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import xyz.jdynb.dymovies.common.config.StatusCode;
+import xyz.jdynb.dymovies.common.constants.StatusCode;
 
 /**
  * 对返回数据的进一步封装

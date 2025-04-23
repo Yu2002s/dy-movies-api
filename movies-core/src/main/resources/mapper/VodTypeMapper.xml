@@ -46,23 +46,33 @@
             </if>
             status = 1
         </where>
-        order by weight
+        order by weight desc
     </select>
 
     <select id="findAllByFlag" resultMap="vodTypeMap">
-        select p.id parent_id, p.pid ppid, p.name pname, c.id cid, c.pid cpid, c.name cname
+        select p.id     parent_id,
+               p.pid    ppid,
+               p.name   pname,
+               c.id     cid,
+               c.pid    cpid,
+               c.name   cname
         from dy_movies.vod_type p
                  left join dy_movies.vod_type c on p.id = c.pid
         where p.flag = #{flag}
           and p.status = 1
           and p.pid is null
-        order by p.weight, c.weight
+        order by p.weight desc, c.weight desc
     </select>
     <select id="findListByParent" resultType="xyz.jdynb.dymovies.entity.VodType">
-        select id, name
+        select id, name, flag
         from dy_movies.vod_type
-        where flag = #{flag}
-          and pid IS NULL
+        <where>
+            <if test="flag != null and flag != ''">
+                flag = #{flag} and
+            </if>
+            pid is null and status = 1
+        </where>
+        order by weight desc
     </select>
     <select id="findListByPid" resultType="xyz.jdynb.dymovies.entity.VodType">
         select id, name
@@ -70,6 +80,6 @@
         where flag = #{flag}
           and pid = #{pid}
           and status = 1
-        order by weight
+        order by weight desc
     </select>
 </mapper>

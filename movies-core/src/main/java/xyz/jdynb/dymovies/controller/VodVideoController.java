@@ -44,6 +44,28 @@ public class VodVideoController {
     }
 
     /**
+     * 通过影片的详情 id 和 flag 来获取视频列表
+     * @param detailId 唯一详情 id
+     * @param flag 采集源标识
+     * @return 视频列表
+     */
+    @GetMapping("/list")
+    public Result<List<VodVideo>> getVodVideosByDetailId(Integer detailId, String flag) {
+        return Result.success(vodVideoService.findByDetailId(detailId, flag));
+    }
+
+    /**
+     * 通过影片名称获取其他源下的视频列表
+     * @param name 影片名称
+     * @param flag 采集源标识
+     * @return 视频列表
+     */
+    @GetMapping("/video")
+    public Result<List<VodVideo>> getVodVideoByName(String name, String flag) {
+        return Result.success(vodVideoService.findListByName(name, flag));
+    }
+
+    /**
      * 获取影片的采集源和视频列表
      * @param vid 影片 id
      * @param flag 采集源标识

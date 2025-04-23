@@ -26,9 +26,6 @@ public class VodServiceImpl implements VodService {
     @Resource
     private VodConfigService vodConfigService;
 
-    @Resource
-    private VodTypeService vodTypeService;
-
     @Override
     public int add(Vod vod) {
         return vodMapper.add(vod);
@@ -60,7 +57,7 @@ public class VodServiceImpl implements VodService {
         vodQueryParamsDto.setFlag(flag);
 
         int total;
-        // 有 pid 代表是有父级
+        // 有 pid 代表是有父级，此时是查找子集的类型
         if (vodQueryParamsDto.getPid() != null && vodQueryParamsDto.getPid() != 0) {
             // 获取总记录数
             // 直接通过tid进行获取
@@ -88,5 +85,10 @@ public class VodServiceImpl implements VodService {
         String flag = vodConfigService.findFlag();
         vodLatestQueryParamsDto.setFlag(flag);
         return vodMapper.findLast(vodLatestQueryParamsDto);
+    }
+
+    @Override
+    public Integer findVid(Integer id, String flag) {
+        return vodMapper.findVid(id, flag);
     }
 }

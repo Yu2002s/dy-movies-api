@@ -79,6 +79,7 @@ mybatis:
   mapper-locations:
     - classpath:mapper/*.xml
     - classpath*:com/**/mapper/*.xml
+    - classpath:mapper/admin/*.xml
 
 # Jwt信息
 jwt:

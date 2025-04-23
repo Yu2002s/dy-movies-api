@@ -1,0 +1,2 @@
+### 获取影片采集源列表
+GET {{host}}/vodProviders

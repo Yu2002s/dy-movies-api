@@ -28,6 +28,8 @@ public interface VodVideoMapper {
 
     List<VodVideo> findListByName(String name);
 
+    List<VodVideo> findListByNameAndFlag(String name, String flag);
+
     VodVideo findById(Integer id, String flag);
 
     List<VodVideo> findByVid(Integer vid, String flag);

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.jdynb.dymovies.common.pojo.Result;
 import xyz.jdynb.dymovies.dto.VodQueryParamsDto;
+import xyz.jdynb.dymovies.entity.Vod;
 import xyz.jdynb.dymovies.entity.VodDetail;
 import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.VodSearchService;

@@ -1,7 +1,12 @@
 package xyz.jdynb.dymovies.entity;
 
 import java.io.Serializable;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import xyz.jdynb.dymovies.validator.UpdateGroup;
+import xyz.jdynb.dymovies.validator.UpdateVodProviderGroup;
 
 /**
  * job组列表
@@ -12,22 +17,20 @@ public class VodProvider implements Serializable {
     /**
      * 唯一id
      */
+    @NotNull(message = "id不能为空", groups = UpdateGroup.class)
     private Integer id;
 
     /**
      * 组名
      */
+    @NotNull(message = "采集来源名称不能为空")
+    @NotBlank(message = "采集来源名称不能为空")
     private String name;
 
     /**
      * 备注
      */
     private String remark;
-
-    /**
-     * 接口地址
-     */
-    private String url;
 
     private static final long serialVersionUID = 1L;
 }

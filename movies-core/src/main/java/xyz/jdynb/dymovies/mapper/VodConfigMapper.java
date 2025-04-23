@@ -14,6 +14,7 @@ public interface VodConfigMapper {
 
     String findFlag();
 
+    int updateFlag(String flag);
 }
 
 

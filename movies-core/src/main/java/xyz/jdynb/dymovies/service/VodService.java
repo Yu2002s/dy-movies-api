@@ -28,4 +28,6 @@ public interface VodService {
     List<Vod> findLast(int pageSize, Integer typeId);
 
     List<Vod> findLast(VodLatestQueryParamsDto vodLatestQueryParamsDto);
+
+    Integer findVid(Integer id, String flag);
 }

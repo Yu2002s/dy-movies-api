@@ -6,7 +6,10 @@ Api-Key: m8wZ0TSYN2
 {
   "page": 1,
   "pageSize": 10,
-  "typeId": 0,
-  "keyword": "",
-  "tid": 1
+  "keyword": "1",
+  "tid": 6,
+  "pid": 1,
+  "flag": "lzm3u8",
+  "sort": 1,
+  "year": "2024-2025"
 }

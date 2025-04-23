@@ -15,7 +15,7 @@ import java.util.List;
 @Mapper
 public interface VodProviderMapper {
 
-    @Select("select id, name, url, remark from dy_movies.vod_provider")
+    @Select("select id, name, remark from dy_movies.vod_provider order by weight desc")
     List<VodProvider> findAll();
 }
 

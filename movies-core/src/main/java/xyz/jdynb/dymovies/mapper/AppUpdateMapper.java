@@ -1,7 +1,10 @@
 package xyz.jdynb.dymovies.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import xyz.jdynb.dymovies.dto.PageParams;
 import xyz.jdynb.dymovies.entity.AppUpdate;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -12,8 +15,17 @@ import xyz.jdynb.dymovies.entity.AppUpdate;
 @Mapper
 public interface AppUpdateMapper {
 
+    int count();
+
     AppUpdate findLastByCode(long code);
 
+    List<AppUpdate> findListByPage(PageParams params);
+
+    int add(AppUpdate appUpdate);
+
+    int update(AppUpdate appUpdate);
+
+    boolean delete(Integer id);
 }
 
 

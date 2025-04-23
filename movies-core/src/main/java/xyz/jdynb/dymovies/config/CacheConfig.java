@@ -51,7 +51,7 @@ public class CacheConfig {
         
         // 默认配置
         RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofDays(1)) // 默认缓存1天
+                .entryTtl(Duration.ofMinutes(1)) // 默认缓存1分钟
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(stringRedisSerializer))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jsonRedisSerializer))
                 .disableCachingNullValues();

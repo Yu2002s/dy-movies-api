@@ -7,5 +7,4 @@ import java.util.List;
 public interface VodProviderService {
 
     List<VodProvider> findAll();
-
 }

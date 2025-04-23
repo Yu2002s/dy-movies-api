@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import xyz.jdynb.dymovies.vo.UserAuthVo;
 @Slf4j
 @RestController
 @RequestMapping("/users")
+@Validated
 public class UserController {
 
     @Value("${admin-verify-code}")

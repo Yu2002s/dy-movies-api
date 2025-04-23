@@ -7,10 +7,10 @@
     <resultMap id="BaseResultMap" type="xyz.jdynb.dymovies.entity.VodConfig">
             <result property="flag" column="flag" jdbcType="VARCHAR"/>
     </resultMap>
+    <update id="updateFlag">
+        update dy_movies.vod_config set flag = #{flag}
+    </update>
 
-    <sql id="Base_Column_List">
-        flag
-    </sql>
     <select id="findFlag" resultType="java.lang.String">
         select flag from dy_movies.vod_config
     </select>

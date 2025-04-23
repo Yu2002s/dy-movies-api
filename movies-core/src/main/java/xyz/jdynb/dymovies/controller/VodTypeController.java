@@ -22,8 +22,8 @@ public class VodTypeController {
      * @return 类型列表
      */
     @GetMapping("/parent")
-    public Result<List<VodType>> getParentVodTypes() {
-        return Result.success(vodTypeService.findParentList());
+    public Result<List<VodType>> getParentVodTypes(String flag) {
+        return Result.success(vodTypeService.findParentList(flag));
     }
 
     @GetMapping

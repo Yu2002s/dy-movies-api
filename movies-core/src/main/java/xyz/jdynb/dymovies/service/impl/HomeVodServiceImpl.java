@@ -1,15 +1,12 @@
 package xyz.jdynb.dymovies.service.impl;
 
-import io.jsonwebtoken.lang.Collections;
 import jakarta.annotation.Resource;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
-import xyz.jdynb.dymovies.config.HomeCate;
-import xyz.jdynb.dymovies.entity.Vod;
+import xyz.jdynb.dymovies.enums.HomeCate;
 import xyz.jdynb.dymovies.entity.VodBanner;
 import xyz.jdynb.dymovies.dto.VodFeedDto;
-import xyz.jdynb.dymovies.entity.VodType;
 import xyz.jdynb.dymovies.service.HomeVodService;
 import xyz.jdynb.dymovies.service.VodBannerService;
 import xyz.jdynb.dymovies.service.VodService;
@@ -18,11 +15,7 @@ import xyz.jdynb.dymovies.vo.HomeVodDataVo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import lombok.extern.slf4j.Slf4j;
 

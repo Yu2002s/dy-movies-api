@@ -49,6 +49,7 @@ public class SchedulerManager {
      *
      * @param schedulerJob 具体任务信息
      */
+    @SuppressWarnings("unchecked")
     public boolean createJob(SchedulerJob schedulerJob) {
         log.info("createJob: {}", schedulerJob);
         JobKey jobKey = JobKey.jobKey(schedulerJob.getName(), schedulerJob.getGroup());
@@ -74,6 +75,7 @@ public class SchedulerManager {
      *
      * @param schedulerJob 具体的任务信息
      */
+    @SuppressWarnings("unchecked")
     public boolean updateJob(SchedulerJob schedulerJob) {
         log.info("updateJob: {}", schedulerJob);
         TriggerKey triggerKey = TriggerKey.triggerKey(schedulerJob.getName(), schedulerJob.getGroup());

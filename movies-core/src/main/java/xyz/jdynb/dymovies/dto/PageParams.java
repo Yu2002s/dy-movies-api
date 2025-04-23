@@ -2,10 +2,13 @@ package xyz.jdynb.dymovies.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 @Data
+@NoArgsConstructor
 public class PageParams {
 
     /**
@@ -28,5 +31,10 @@ public class PageParams {
 
     public int getPageOffset() {
         return (page - 1) * pageSize;
+    }
+
+    public PageParams(Integer page, Integer pageSize) {
+        this.page = page;
+        this.pageSize = pageSize;
     }
 }

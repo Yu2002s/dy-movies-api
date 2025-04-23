@@ -1,4 +1,4 @@
-package xyz.jdynb.dymovies.mapper;
+package xyz.jdynb.dymovies.mapper.admin;
 
 import org.apache.ibatis.annotations.Mapper;
 import xyz.jdynb.dymovies.entity.AdminUser;

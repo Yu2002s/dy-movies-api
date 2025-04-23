@@ -8,19 +8,42 @@
         select v.id, v.vid, v.name, v.tid, v.flag, v.note, v.update_time, v.pic, v.year, v.director, v.lang,
         v.area, v.actor, v.year
         from dy_movies.vod_detail v
-        where v.flag = #{flag} and v.name like concat('%', #{keyword}, '%')
-        <if test="tid != null and tid != 0">
-            and v.tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{tid})
-        </if>
-        order by v.year, v.update_time desc limit #{pageOffset}, #{pageSize}
+        <where>
+            <if test="flag != null and flag != ''">
+                v.flag = #{flag} and
+            </if>
+            <if test="pid == null and tid != null and tid != 0">
+                v.tid in (select id from dy_movies.vod_type where
+                <if test="flag != null and flag != ''">
+                    flag = #{flag} and
+                </if>
+                pid = #{tid}) and
+            </if>
+            <if test="pid != null and tid != null and tid != 0">
+                tid = #{tid} and
+            </if>
+            v.name like concat('%', #{keyword}, '%')
+        </where>
+        order by v.year desc, v.update_time desc limit #{pageOffset}, #{pageSize}
     </select>
     <select id="countByKeywordAndType" resultType="java.lang.Integer">
         select count(*)
         from dy_movies.vod_detail v
-        where v.flag = #{flag}
-        <if test="tid != null and tid != 0">
-            and v.tid in (select id from dy_movies.vod_type where flag = #{flag} and pid = #{tid})
-        </if>
-        and name like concat('%', #{keyword}, '%')
+        <where>
+            <if test="flag != null and flag != ''">
+                v.flag = #{flag} and
+            </if>
+            <if test="pid == null and tid != null and tid != 0">
+                v.tid in (select id from dy_movies.vod_type where
+                <if test="flag != null and flag != ''">
+                    flag = #{flag} and
+                </if>
+                pid = #{tid}) and
+            </if>
+            <if test="pid != null and tid != null and tid != 0">
+                tid = #{tid} and
+            </if>
+            name like concat('%', #{keyword}, '%')
+        </where>
     </select>
 </mapper>

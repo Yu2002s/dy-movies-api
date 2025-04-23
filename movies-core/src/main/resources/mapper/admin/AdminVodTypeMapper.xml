@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.mapper.admin.AdminVodTypeMapper">
+
+    <resultMap id="vodTypeMap" type="xyz.jdynb.dymovies.entity.VodType">
+        <id property="id" column="parent_id" jdbcType="INTEGER"/>
+        <result property="name" column="pname" jdbcType="VARCHAR"/>
+        <result property="status" column="pstatus" jdbcType="TINYINT"/>
+        <result property="weight" column="pweight" jdbcType="TINYINT"/>
+        <result property="flag" column="pflag" jdbcType="VARCHAR" />
+        <!--<result property="pid" column="parent_id" jdbcType="INTEGER"/>-->
+        <collection property="children" ofType="xyz.jdynb.dymovies.entity.VodType">
+            <id property="id" column="cid" jdbcType="INTEGER"/>
+            <result column="cpid" property="pid" jdbcType="INTEGER"/>
+            <result column="cname" property="name" jdbcType="VARCHAR"/>
+            <result column="cstatus" property="status" jdbcType="TINYINT"/>
+            <result column="cweight" property="weight" jdbcType="TINYINT"/>
+            <result column="cflag" property="flag" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+    <update id="update">
+        update dy_movies.vod_type
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="pid == null or pid == ''">
+                pid = null,
+            </if>
+            <if test="pid != null and pid != ''">
+                pid = #{pid},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="weight != null">
+                weight = #{weight},
+            </if>
+            <if test="flag != null and flag != ''">
+                flag = #{flag}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="findList" resultMap="vodTypeMap">
+        select p.id parent_id,
+        p.pid ppid,
+        p.name pname,
+        p.status pstatus,
+        p.weight pweight,
+        p.flag pflag,
+        c.id cid,
+        c.pid cpid,
+        c.name cname,
+        c.status cstatus,
+        c.weight cweight,
+        c.flag cflag
+        from dy_movies.vod_type p
+        left join dy_movies.vod_type c on p.id = c.pid and p.flag = c.flag
+        where p.pid is null
+        <if test="flag != null and flag != ''">
+            and p.flag = #{flag}
+        </if>
+        order by p.weight desc, c.weight desc
+    </select>
+</mapper>

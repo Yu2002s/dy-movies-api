@@ -37,6 +37,7 @@ public interface VodMapper {
 
     List<Vod> findLast(VodLatestQueryParamsDto params);
 
+    Integer findVid(Integer id, String flag);
 }
 
 

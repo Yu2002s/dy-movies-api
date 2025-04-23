@@ -7,6 +7,7 @@ import xyz.jdynb.dymovies.entity.VodVideo;
 import xyz.jdynb.dymovies.mapper.VodVideoMapper;
 import xyz.jdynb.dymovies.pojo.VodSource;
 import xyz.jdynb.dymovies.service.VodProviderService;
+import xyz.jdynb.dymovies.service.VodService;
 import xyz.jdynb.dymovies.service.VodVideoService;
 import xyz.jdynb.dymovies.vo.VodSourceVideoVo;
 
@@ -21,6 +22,9 @@ public class VodVideoServiceImpl implements VodVideoService {
 
     @Resource
     private VodProviderService vodProviderService;
+
+    @Resource
+    private VodService vodService;
 
     @Override
     public int countByVid(Integer vid) {
@@ -91,6 +95,21 @@ public class VodVideoServiceImpl implements VodVideoService {
         List<VodProvider> vodProviders = vodProviderService.findAll();
         List<VodVideo> videos = findByVid(vid, flag);
         return new VodSourceVideoVo(vodProviders, videos);
+    }
+
+    @Override
+    public List<VodVideo> findByDetailId(Integer detailId, String flag) {
+        Integer vid = vodService.findVid(detailId, flag);
+        return findByVid(vid, flag);
+    }
+
+    @Override
+    public List<VodVideo> findListByName(String name, String flag) {
+        if (!existTable(flag)) {
+            // 可能表不能存在的情况
+            return Collections.emptyList();
+        }
+        return vodVideoMapper.findListByNameAndFlag(name, flag);
     }
 
     @Override

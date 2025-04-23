@@ -12,5 +12,5 @@ public interface VodSearchMapper {
 
     List<VodDetail> findListByKeywordAndType(VodQueryParamsDto params);
 
-    int countByKeywordAndType(String flag, Integer tid, String keyword);
+    int countByKeywordAndType(VodQueryParamsDto params);
 }

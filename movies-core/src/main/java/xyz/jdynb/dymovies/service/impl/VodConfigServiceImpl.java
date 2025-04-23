@@ -15,4 +15,9 @@ public class VodConfigServiceImpl implements VodConfigService {
     public String findFlag() {
         return vodConfigMapper.findFlag();
     }
+
+    @Override
+    public boolean updateFlag(String flag) {
+        return vodConfigMapper.updateFlag(flag) > 0;
+    }
 }

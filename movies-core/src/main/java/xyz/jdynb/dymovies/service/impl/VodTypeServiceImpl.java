@@ -3,6 +3,7 @@ package xyz.jdynb.dymovies.service.impl;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import xyz.jdynb.dymovies.entity.VodType;
 import xyz.jdynb.dymovies.mapper.VodTypeMapper;
 import xyz.jdynb.dymovies.service.VodConfigService;
@@ -37,9 +38,14 @@ public class VodTypeServiceImpl implements VodTypeService {
     }
 
     @Override
-    public List<VodType> findParentList() {
-        String flag = vodConfigService.findFlag();
-        return vodTypeMapper.findListByParent(flag);
+    public List<VodType> findParentList(String flag) {
+        String currentFlag;
+        if (StringUtils.hasText(flag)) {
+            currentFlag = flag;
+        } else {
+            currentFlag = vodConfigService.findFlag();
+        }
+        return vodTypeMapper.findListByParent(currentFlag);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package xyz.jdynb.dymovies.config;
+package xyz.jdynb.dymovies.enums;
 
 import lombok.Getter;
 import xyz.jdynb.dymovies.pojo.VodFilter;
