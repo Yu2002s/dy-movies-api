@@ -7,9 +7,9 @@ import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.StringUtils;
-import xyz.jdynb.dymovies.entity.VodVideo;
+import xyz.jdynb.dymovies.common.entity.VodVideo;
+import xyz.jdynb.dymovies.common.utils.MD5Utils;
 import xyz.jdynb.dymovies.service.VodService;
-import xyz.jdynb.dymovies.utils.MD5Utils;
 
 import java.util.Arrays;
 import java.util.List;

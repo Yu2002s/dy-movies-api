@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.admin.mapper.AdminVodMapper">
+
+    <select id="findList" resultMap="xyz.jdynb.dymovies.mapper.VodMapper.vodMap">
+        select v.id,
+        v.vid,
+        v.name,
+        v.tid,
+        v.note,
+        v.update_time,
+        v.flag,
+        v.create_time,
+        v.pic
+        from dy_movies.vod_detail v
+        <where>
+            <if test="tid != null">
+                and v.tid = #{tid}
+            </if>
+            <if test="flag != null and flag != ''">
+                and v.flag = #{flag}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                and v.name like concat('%', #{keyword}, '%')
+            </if>
+        </where>
+        order by v.create_time desc
+        limit #{pageOffset},#{pageSize}
+    </select>
+    <select id="count" resultType="int">
+        select count(*)
+        from dy_movies.vod_detail
+        <where>
+            <if test="tid != null">
+                tid = #{tid}
+            </if>
+            <if test="flag != null and flag != ''">
+                and flag = #{flag}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                and name = #{keyword}
+            </if>
+        </where>
+    </select>
+    <insert id="add">
+        insert into dy_movies.vod(vid, name, tid, note, update_time, flag)
+        values (#{vid}, #{name}, #{tid}, #{note}, #{updateTime}, #{flag})
+    </insert>
+    <insert id="addBatch">
+        insert into dy_movies.vod(vid, name,tid,note,update_time,flag) values
+        <foreach collection="vodList" item="item" separator=",">
+            (#{item.vid},#{item.name},#{item.tid},#{item.note},#{item.updateTime},#{item.flag})
+        </foreach>
+    </insert>
+    <select id="countByVidAndFlag" resultType="java.lang.Integer">
+        select count(*)
+        from dy_movies.vod
+        where flag = #{flag}
+          and vid = #{vid}
+    </select>
+</mapper>

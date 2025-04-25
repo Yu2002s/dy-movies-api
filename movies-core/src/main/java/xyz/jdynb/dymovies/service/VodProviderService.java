@@ -1,6 +1,6 @@
 package xyz.jdynb.dymovies.service;
 
-import xyz.jdynb.dymovies.entity.VodProvider;
+import xyz.jdynb.dymovies.common.entity.VodProvider;
 
 import java.util.List;
 

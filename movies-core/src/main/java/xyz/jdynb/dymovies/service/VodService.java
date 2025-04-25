@@ -1,21 +1,13 @@
 package xyz.jdynb.dymovies.service;
 
-import xyz.jdynb.dymovies.dto.VodLatestQueryParamsDto;
-import xyz.jdynb.dymovies.dto.VodQueryParamsDto;
-import xyz.jdynb.dymovies.entity.Vod;
-import xyz.jdynb.dymovies.dto.Page;
-import xyz.jdynb.dymovies.entity.VodDetail;
+import xyz.jdynb.dymovies.common.dto.Page;
+import xyz.jdynb.dymovies.common.dto.VodLatestQueryParamsDto;
+import xyz.jdynb.dymovies.common.dto.VodQueryParamsDto;
+import xyz.jdynb.dymovies.common.entity.Vod;
 
 import java.util.List;
-import java.util.Map;
 
 public interface VodService {
-
-    int countByVidAndFlag(Integer id, String flag);
-
-    int add(Vod vod);
-
-    int addBatch(List<Vod> vodList);
 
     int addOrUpdate(Vod vod);
 
@@ -28,6 +20,10 @@ public interface VodService {
     List<Vod> findLast(int pageSize, Integer typeId);
 
     List<Vod> findLast(VodLatestQueryParamsDto vodLatestQueryParamsDto);
+
+    Page<Vod> findList(VodQueryParamsDto vodQueryParamsDto);
+
+    int count(VodQueryParamsDto vodQueryParamsDto);
 
     Integer findVid(Integer id, String flag);
 }

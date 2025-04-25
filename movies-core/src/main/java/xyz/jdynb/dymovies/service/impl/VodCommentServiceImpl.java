@@ -2,11 +2,11 @@ package xyz.jdynb.dymovies.service.impl;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import xyz.jdynb.dymovies.common.dto.Page;
 import xyz.jdynb.dymovies.dto.VodCommentAddParamsDto;
 import xyz.jdynb.dymovies.dto.VodCommentQueryParamsDto;
 import xyz.jdynb.dymovies.entity.VodComment;
 import xyz.jdynb.dymovies.mapper.VodCommentMapper;
-import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.VodCommentService;
 
 import java.util.List;

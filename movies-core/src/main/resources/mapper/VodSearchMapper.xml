@@ -4,46 +4,55 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.jdynb.dymovies.mapper.VodSearchMapper">
 
-    <select id="findListByKeywordAndType" resultType="xyz.jdynb.dymovies.entity.VodDetail">
+    <select id="findList" resultType="xyz.jdynb.dymovies.common.entity.VodDetail">
         select v.id, v.vid, v.name, v.tid, v.flag, v.note, v.update_time, v.pic, v.year, v.director, v.lang,
         v.area, v.actor, v.year
         from dy_movies.vod_detail v
         <where>
             <if test="flag != null and flag != ''">
-                v.flag = #{flag} and
+                v.flag = #{flag}
             </if>
-            <if test="pid == null and tid != null and tid != 0">
-                v.tid in (select id from dy_movies.vod_type where
+            <if test="tid == null and pid != null">
+                and v.tid in (select id from dy_movies.vod_type where
                 <if test="flag != null and flag != ''">
                     flag = #{flag} and
                 </if>
-                pid = #{tid}) and
+                pid = #{pid})
             </if>
-            <if test="pid != null and tid != null and tid != 0">
-                tid = #{tid} and
+            <if test="tid != null and tid != 0">
+                and tid = #{tid}
             </if>
-            v.name like concat('%', #{keyword}, '%')
+            <if test="yearEnd == null and year != null and year != ''">
+                and v.year = #{year}
+            </if>
+            <if test="yearEnd != null and yearEnd != ''">
+                and v.year between #{year} and #{yearEnd}
+            </if>
+            <if test="area != null and area != ''">
+                and v.area like concat('%', #{area}, '%')
+            </if>
+            <if test="keyword != null and keyword != ''">
+                and v.name like concat('%', #{keyword}, '%')
+            </if>
         </where>
-        order by v.year desc, v.update_time desc limit #{pageOffset}, #{pageSize}
-    </select>
-    <select id="countByKeywordAndType" resultType="java.lang.Integer">
-        select count(*)
-        from dy_movies.vod_detail v
-        <where>
-            <if test="flag != null and flag != ''">
-                v.flag = #{flag} and
-            </if>
-            <if test="pid == null and tid != null and tid != 0">
-                v.tid in (select id from dy_movies.vod_type where
-                <if test="flag != null and flag != ''">
-                    flag = #{flag} and
-                </if>
-                pid = #{tid}) and
-            </if>
-            <if test="pid != null and tid != null and tid != 0">
-                tid = #{tid} and
-            </if>
-            name like concat('%', #{keyword}, '%')
-        </where>
+        order by v.year
+        <choose>
+            <when test="sort == 1">
+                desc
+            </when>
+            <otherwise>
+                asc
+            </otherwise>
+        </choose>
+        , v.update_time
+        <choose>
+            <when test="sort == 1">
+                desc
+            </when>
+            <otherwise>
+                asc
+            </otherwise>
+        </choose>
+        limit #{pageOffset}, #{pageSize}
     </select>
 </mapper>

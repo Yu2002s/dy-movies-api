@@ -6,10 +6,10 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import xyz.jdynb.dymovies.entity.VodVideo;
-import xyz.jdynb.dymovies.vo.VodParseUrlVo;
+import xyz.jdynb.dymovies.common.entity.VodVideo;
 import xyz.jdynb.dymovies.service.VodParserService;
 import xyz.jdynb.dymovies.service.VodVideoService;
+import xyz.jdynb.dymovies.vo.VodParseUrlVo;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

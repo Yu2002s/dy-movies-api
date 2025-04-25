@@ -9,10 +9,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
-import xyz.jdynb.dymovies.anno.Cacheable;
-import xyz.jdynb.dymovies.utils.AesEncryption;
+import xyz.jdynb.dymovies.common.anno.Cacheable;
+import xyz.jdynb.dymovies.common.utils.AesEncryption;
 
-import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Method;
 
 /**

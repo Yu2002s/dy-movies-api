@@ -1,9 +1,7 @@
 package xyz.jdynb.dymovies.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import xyz.jdynb.dymovies.entity.Vod;
-import xyz.jdynb.dymovies.entity.VodBanner;
-import xyz.jdynb.dymovies.entity.VodDetail;
+import xyz.jdynb.dymovies.common.entity.VodBanner;
 
 import java.util.List;
 

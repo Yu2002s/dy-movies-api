@@ -4,34 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.jdynb.dymovies.mapper.VodTypeMapper">
 
-    <resultMap id="baseVopTypeMap" type="xyz.jdynb.dymovies.entity.VodType">
+    <resultMap id="baseVopTypeMap" type="xyz.jdynb.dymovies.common.entity.VodType">
         <id property="id" column="id" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="flag" column="flag" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <resultMap id="vodTypeMap" type="xyz.jdynb.dymovies.entity.VodType">
+    <resultMap id="vodTypeMap" type="xyz.jdynb.dymovies.common.entity.VodType">
         <id property="id" column="parent_id" jdbcType="INTEGER"/>
         <result property="name" column="pname" jdbcType="VARCHAR"/>
         <!--<result property="pid" column="parent_id" jdbcType="INTEGER"/>-->
-        <collection property="children" ofType="xyz.jdynb.dymovies.entity.VodType">
+        <collection property="children" ofType="xyz.jdynb.dymovies.common.entity.VodType">
             <id property="id" column="cid" jdbcType="INTEGER"/>
             <result column="cpid" property="pid" jdbcType="INTEGER"/>
             <result column="cname" property="name" jdbcType="VARCHAR"/>
         </collection>
     </resultMap>
 
-    <insert id="addBatch">
-        insert into dy_movies.vod_type (id, name,flag,pid) values
-        <foreach collection="vodTypes" item="item" separator=",">
-            (#{item.id},#{item.name},#{item.flag},#{item.pid})
-        </foreach>
-    </insert>
-    <select id="countByFlag" resultType="java.lang.Integer">
-        select count(id)
-        from dy_movies.vod_type
-        where flag = #{flag}
-    </select>
     <select id="findList" resultMap="baseVopTypeMap">
         select distinct name, id, name, flag
         from dy_movies.vod_type
@@ -63,7 +52,7 @@
           and p.pid is null
         order by p.weight desc, c.weight desc
     </select>
-    <select id="findListByParent" resultType="xyz.jdynb.dymovies.entity.VodType">
+    <select id="findListByParent" resultType="xyz.jdynb.dymovies.common.entity.VodType">
         select id, name, flag
         from dy_movies.vod_type
         <where>
@@ -74,7 +63,7 @@
         </where>
         order by weight desc
     </select>
-    <select id="findListByPid" resultType="xyz.jdynb.dymovies.entity.VodType">
+    <select id="findListByPid" resultType="xyz.jdynb.dymovies.common.entity.VodType">
         select id, name
         from dy_movies.vod_type
         where flag = #{flag}

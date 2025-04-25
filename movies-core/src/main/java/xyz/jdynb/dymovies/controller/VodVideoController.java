@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.jdynb.dymovies.common.entity.VodVideo;
 import xyz.jdynb.dymovies.common.pojo.Result;
-import xyz.jdynb.dymovies.entity.VodVideo;
-import xyz.jdynb.dymovies.pojo.VodSource;
+import xyz.jdynb.dymovies.common.pojo.VodSource;
+import xyz.jdynb.dymovies.common.vo.VodSourceVideoVo;
 import xyz.jdynb.dymovies.service.VodVideoService;
-import xyz.jdynb.dymovies.vo.VodSourceVideoVo;
 
 import java.util.List;
 
@@ -41,17 +41,6 @@ public class VodVideoController {
     @GetMapping("/{vid}")
     public Result<List<VodVideo>> getVodVideosByVid(@PathVariable Integer vid, String flag) {
         return Result.success(vodVideoService.findByVid(vid, flag));
-    }
-
-    /**
-     * 通过影片的详情 id 和 flag 来获取视频列表
-     * @param detailId 唯一详情 id
-     * @param flag 采集源标识
-     * @return 视频列表
-     */
-    @GetMapping("/list")
-    public Result<List<VodVideo>> getVodVideosByDetailId(Integer detailId, String flag) {
-        return Result.success(vodVideoService.findByDetailId(detailId, flag));
     }
 
     /**

@@ -70,7 +70,7 @@ spring:
 # mybatis 配置数据
 mybatis:
   # 包别名配置
-  type-aliases-package: xyz.jdynb.dymovies.entity
+  type-aliases-package: xyz.jdynb.dymovies.entity,xyz.jdynb.dymovies.common.entity,xyz.jdynb.dymovies.admin.entity
   configuration:
     # 开启驼峰命名
     map-underscore-to-camel-case: true
@@ -78,9 +78,6 @@ mybatis:
   # 设置 mapper 映射路径
   mapper-locations:
     - classpath:mapper/*.xml
-    - classpath*:com/**/mapper/*.xml
-    - classpath:mapper/admin/*.xml
-
 # Jwt信息
 jwt:
   # 密钥

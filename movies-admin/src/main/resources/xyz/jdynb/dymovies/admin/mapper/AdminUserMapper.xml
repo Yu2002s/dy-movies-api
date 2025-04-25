@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.admin.mapper.AdminUserMapper">
+
+    <resultMap id="adminUserMap" type="xyz.jdynb.dymovies.admin.entity.AdminUser">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="avatar" column="avatar"/>
+    </resultMap>
+    <select id="findByUsernameAndPassword" resultType="xyz.jdynb.dymovies.admin.entity.AdminUser">
+        select *
+        from admin_user
+        where username = #{username}
+          and password = #{password}
+        limit 1
+    </select>
+    <select id="selectUserById" resultType="xyz.jdynb.dymovies.admin.entity.AdminUser">
+        select *
+        from admin_user
+        where id = #{userId}
+    </select>
+    <!--<select id="selectAdminUsers" resultType="adminUser">
+        select au.*, r.name AS role_name
+        from admin_user au
+                 left join role r on au.role_id = r.id
+    </select>-->
+    <!--<select id="selectUsers" resultType="xyz.jdynb.dymovies.entity.User">
+        select * from user
+        <if test="nickname != null and nickname != ''">
+            where nickname = #{nickname}
+        </if>
+    </select>-->
+    <select id="findById" resultType="xyz.jdynb.dymovies.admin.entity.AdminUser">
+        select * from admin_user where id = #{id}
+    </select>
+</mapper>

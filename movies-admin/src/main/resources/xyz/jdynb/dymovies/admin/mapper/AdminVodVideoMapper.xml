@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.admin.mapper.AdminVodVideoMapper">
+    <insert id="addBatch">
+        insert into dy_movies.vod_video_${flag} (vid, name, url, flag) VALUES
+        <foreach collection="vodVideos" item="item" separator=",">
+            (#{item.vid},#{item.name},#{item.url},#{item.flag})
+        </foreach>
+    </insert>
+
+    <insert id="add">
+        insert into dy_movies.vod_video_${flag} (vid, name, url, flag)
+        VALUES (#{vid}, #{name}, #{url}, #{flag})
+    </insert>
+    <update id="createTable">
+        create table dy_movies.vod_video_${flag}
+        (
+            id   int auto_increment comment '影片视频唯一id'
+                primary key,
+            vid  int          not null comment '影片关联id',
+            name varchar(200) not null comment '视频名称',
+            url  varchar(300) not null comment '视频播放地址',
+            flag varchar(20)  not null comment '唯一标识'
+        )
+            comment '影片视频信息';
+
+        create index vod_video_vid_index
+            on dy_movies.vod_video_${flag} (vid)
+            comment '影片关联id索引';
+    </update>
+    <select id="existTable" resultType="int">
+        select count(*)
+        from information_schema.TABLES
+        where TABLE_NAME = 'vod_video_${flag}'
+    </select>
+
+    <select id="countByVid" resultType="int">
+        select count(*)
+        from dy_movies.vod_video
+        where vid = #{vid}
+    </select>
+
+    <select id="countByVidAndFlag" resultType="int">
+        select count(*)
+        from dy_movies.vod_video_${flag}
+        where vid = #{vid}
+    </select>
+</mapper>

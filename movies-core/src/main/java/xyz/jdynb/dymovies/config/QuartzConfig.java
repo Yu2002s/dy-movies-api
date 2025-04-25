@@ -1,6 +1,5 @@
 package xyz.jdynb.dymovies.config;
 
-import org.quartz.*;
 import org.quartz.spi.JobFactory;
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -10,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
-import xyz.jdynb.dymovies.job.CollectVodJob;
 
 import javax.sql.DataSource;
 import java.io.IOException;

@@ -1,8 +1,8 @@
 package xyz.jdynb.dymovies.service;
 
-import xyz.jdynb.dymovies.entity.VodVideo;
-import xyz.jdynb.dymovies.pojo.VodSource;
-import xyz.jdynb.dymovies.vo.VodSourceVideoVo;
+import xyz.jdynb.dymovies.common.entity.VodVideo;
+import xyz.jdynb.dymovies.common.pojo.VodSource;
+import xyz.jdynb.dymovies.common.vo.VodSourceVideoVo;
 
 import java.util.List;
 
@@ -12,25 +12,15 @@ public interface VodVideoService {
 
     boolean existTable(String flag);
 
-    int countByVid(Integer vid);
-
-    int countByVidAndFlag(Integer vid, String flag);
-
     VodVideo findById(Integer id, String flag);
 
     List<VodVideo> findByVid(Integer vid, String flag);
-
-    int addBatch(List<VodVideo> vodVideos, String flag);
-
-    void add(VodVideo vodVideo, String flag);
 
     List<VodSource> findSourcesByName(String name);
 
     void updateUrlById(Integer id, String url, String flag);
 
     VodSourceVideoVo findSourcesAndVideos(Integer vid, String flag);
-
-    List<VodVideo> findByDetailId(Integer detailId, String flag);
 
     List<VodVideo> findListByName(String name, String flag);
 }

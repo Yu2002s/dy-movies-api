@@ -2,7 +2,7 @@ package xyz.jdynb.dymovies.service.impl;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import xyz.jdynb.dymovies.entity.VodProvider;
+import xyz.jdynb.dymovies.common.entity.VodProvider;
 import xyz.jdynb.dymovies.mapper.VodProviderMapper;
 import xyz.jdynb.dymovies.service.VodProviderService;
 

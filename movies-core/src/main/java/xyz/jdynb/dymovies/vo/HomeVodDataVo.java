@@ -1,7 +1,7 @@
 package xyz.jdynb.dymovies.vo;
 
 import lombok.Data;
-import xyz.jdynb.dymovies.entity.VodBanner;
+import xyz.jdynb.dymovies.common.entity.VodBanner;
 import xyz.jdynb.dymovies.dto.VodFeedDto;
 
 import java.io.Serializable;

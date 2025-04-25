@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.jdynb.dymovies.mapper.AppUpdateMapper">
 
-    <resultMap id="updateMap" type="xyz.jdynb.dymovies.entity.AppUpdate">
+    <resultMap id="updateMap" type="xyz.jdynb.dymovies.common.entity.AppUpdate">
         <id property="id" column="id"/>
         <result property="versionName" column="version_name"/>
         <result property="versionCode" column="version_code"/>
@@ -13,52 +13,12 @@
         <result property="isForce" column="is_force"/>
         <result property="createAt" column="create_at"/>
     </resultMap>
-    <insert id="add">
-        insert into dy_movies.app_update(version_name, version_code, content, url)
-        values (#{versionName}, #{versionCode}, #{content}, #{url})
-    </insert>
-    <update id="update">
-        update dy_movies.app_update
-        <set>
-            <if test="versionName != null and versionName != ''">
-                version_name = #{versionName},
-            </if>
-            <if test="versionCode != null">
-                version_code = #{versionCode},
-            </if>
-            <if test="content != null and content != ''">
-                content = #{content},
-            </if>
-            <if test="url != null and url != ''">
-                url = #{url},
-            </if>
-            <if test="isForce != null">
-                is_force = #{isForce},
-            </if>
-            <if test="status != null">
-                status = #{status}
-            </if>
-        </set>
-        where id = #{id}
-    </update>
-    <delete id="delete">
-        delete from dy_movies.app_update where id = #{id}
-    </delete>
-    <select id="findLastByCode" resultType="xyz.jdynb.dymovies.entity.AppUpdate">
+    <select id="findLastByCode" resultType="xyz.jdynb.dymovies.common.entity.AppUpdate">
         select *
         from dy_movies.app_update
         where status = 1
           and version_code > #{code}
         order by create_at desc
         limit 1
-    </select>
-    <select id="findListByPage" resultType="xyz.jdynb.dymovies.entity.AppUpdate">
-        select *
-        from dy_movies.app_update
-        order by create_at desc
-        limit #{pageOffset}, #{pageSize}
-    </select>
-    <select id="count" resultType="java.lang.Integer">
-        select count(id) from dy_movies.app_update
     </select>
 </mapper>

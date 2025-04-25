@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.jdynb.dymovies.mapper.VodDetailMapper">
 
-    <resultMap id="vodDetailMap" type="xyz.jdynb.dymovies.entity.VodDetail">
+    <resultMap id="vodDetailMap" type="xyz.jdynb.dymovies.common.entity.VodDetail">
         <id property="id" column="id" jdbcType="INTEGER"/>
         <result property="vid" column="vid" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
@@ -22,32 +22,6 @@
         <result property="score" column="score" jdbcType="DECIMAL"/>
         <result property="tid" column="tid" jdbcType="INTEGER"/>
     </resultMap>
-
-    <insert id="addBatch">
-        insert into dy_movies.vod_detail (vid, tid, name, note, pic, lang, area, year, actor, director, des, flag, hits,
-        score,
-        duration, update_time) VALUES
-        <foreach collection="vodDetails" item="item" separator=",">
-            (#{item.vid},#{item.tid},#{item.name},#{item.note},#{item.pic},#{item.lang},#{item.area},#{item.year},#{item.actor},#{item.director},#{item.des},#{item.flag},#{item.hits},#{item.score},#{item.duration},#{item.updateTime})
-        </foreach>
-    </insert>
-    <insert id="add">
-        insert into dy_movies.vod_detail (vid, tid, name, note, pic, lang, area, year, actor, director, des, flag, hits,
-                                          score, duration, update_time)
-        values (#{vid}, #{tid}, #{name}, #{note}, #{pic}, #{lang}, #{area}, #{year}, #{actor}, #{director}, #{des},
-                #{flag}, #{hits}, #{score}, #{duration}, #{updateTime})
-    </insert>
-    <select id="countByVidAndFlag" resultType="int">
-        select count(*)
-        from dy_movies.vod_detail
-        where flag = #{flag}
-          and vid = #{vid}
-    </select>
-    <select id="count" resultType="int">
-        select count(*)
-        from dy_movies.vod_detail
-        where flag = #{flag}
-    </select>
     <select id="findById" resultMap="vodDetailMap">
         select vd.id,
                vd.vid,

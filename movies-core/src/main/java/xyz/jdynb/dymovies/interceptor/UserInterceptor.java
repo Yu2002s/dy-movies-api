@@ -4,13 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
-import xyz.jdynb.dymovies.anno.RequireLogin;
+import xyz.jdynb.dymovies.common.anno.RequireLogin;
 import xyz.jdynb.dymovies.common.pojo.Result;
+import xyz.jdynb.dymovies.common.utils.JwtUtils;
 import xyz.jdynb.dymovies.entity.User;
-import xyz.jdynb.dymovies.utils.JwtUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -22,7 +23,7 @@ public class UserInterceptor implements HandlerInterceptor {
     private JwtUtils jwtUtils;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
         Method method = ((HandlerMethod) handler).getMethod();
         RequireLogin requireLogin = method.getAnnotation(RequireLogin.class);
 

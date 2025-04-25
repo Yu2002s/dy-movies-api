@@ -2,7 +2,7 @@ package xyz.jdynb.dymovies.vo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.jdynb.dymovies.entity.VodDetail;
+import xyz.jdynb.dymovies.common.entity.VodDetail;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

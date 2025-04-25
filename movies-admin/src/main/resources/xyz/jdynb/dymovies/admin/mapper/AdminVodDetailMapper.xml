@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.admin.mapper.AdminVodDetailMapper">
+    <insert id="addBatch">
+        insert into dy_movies.vod_detail (vid, tid, name, note, pic, lang, area, year, actor, director, des, flag, hits,
+        score,
+        duration, update_time) VALUES
+        <foreach collection="vodDetails" item="item" separator=",">
+            (#{item.vid},#{item.tid},#{item.name},#{item.note},#{item.pic},#{item.lang},#{item.area},#{item.year},#{item.actor},#{item.director},#{item.des},#{item.flag},#{item.hits},#{item.score},#{item.duration},#{item.updateTime})
+        </foreach>
+    </insert>
+    <insert id="add">
+        insert into dy_movies.vod_detail (vid, tid, name, note, pic, lang, area, year, actor, director, des, flag, hits,
+                                          score, duration, update_time)
+        values (#{vid}, #{tid}, #{name}, #{note}, #{pic}, #{lang}, #{area}, #{year}, #{actor}, #{director}, #{des},
+                #{flag}, #{hits}, #{score}, #{duration}, #{updateTime})
+    </insert>
+    <select id="countByVidAndFlag" resultType="int">
+        select count(*)
+        from dy_movies.vod_detail
+        where flag = #{flag}
+          and vid = #{vid}
+    </select>
+    <select id="count" resultType="int">
+        select count(*)
+        from dy_movies.vod_detail
+        where flag = #{flag}
+    </select>
+</mapper>

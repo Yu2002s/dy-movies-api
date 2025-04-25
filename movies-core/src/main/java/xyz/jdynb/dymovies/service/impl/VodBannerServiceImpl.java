@@ -2,9 +2,7 @@ package xyz.jdynb.dymovies.service.impl;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import xyz.jdynb.dymovies.dto.VodBannerSaveParams;
-import xyz.jdynb.dymovies.entity.VodBanner;
-import xyz.jdynb.dymovies.entity.VodDetail;
+import xyz.jdynb.dymovies.common.entity.VodBanner;
 import xyz.jdynb.dymovies.mapper.VodBannerMapper;
 import xyz.jdynb.dymovies.service.VodBannerService;
 

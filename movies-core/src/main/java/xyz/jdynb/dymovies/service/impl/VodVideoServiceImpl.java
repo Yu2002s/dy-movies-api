@@ -2,14 +2,13 @@ package xyz.jdynb.dymovies.service.impl;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import xyz.jdynb.dymovies.entity.VodProvider;
-import xyz.jdynb.dymovies.entity.VodVideo;
+import xyz.jdynb.dymovies.common.entity.VodProvider;
+import xyz.jdynb.dymovies.common.entity.VodVideo;
+import xyz.jdynb.dymovies.common.pojo.VodSource;
+import xyz.jdynb.dymovies.common.vo.VodSourceVideoVo;
 import xyz.jdynb.dymovies.mapper.VodVideoMapper;
-import xyz.jdynb.dymovies.pojo.VodSource;
 import xyz.jdynb.dymovies.service.VodProviderService;
-import xyz.jdynb.dymovies.service.VodService;
 import xyz.jdynb.dymovies.service.VodVideoService;
-import xyz.jdynb.dymovies.vo.VodSourceVideoVo;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,18 +22,16 @@ public class VodVideoServiceImpl implements VodVideoService {
     @Resource
     private VodProviderService vodProviderService;
 
-    @Resource
-    private VodService vodService;
-
     @Override
-    public int countByVid(Integer vid) {
-        return vodVideoMapper.countByVid(vid);
+    public void createTable(String flag) {
+        vodVideoMapper.createTable(flag);
     }
 
     @Override
-    public int countByVidAndFlag(Integer vid, String flag) {
-        return vodVideoMapper.countByVidAndFlag(vid, flag);
+    public boolean existTable(String flag) {
+        return vodVideoMapper.existTable(flag) > 0;
     }
+
 
     @Override
     public VodVideo findById(Integer id, String flag) {
@@ -47,29 +44,6 @@ public class VodVideoServiceImpl implements VodVideoService {
             return Collections.emptyList();
         }
         return vodVideoMapper.findByVid(vid, flag);
-    }
-
-    @Override
-    public int addBatch(List<VodVideo> vodVideos, String flag) {
-        if (vodVideos.isEmpty()) {
-            return 0;
-        }
-        return vodVideoMapper.addBatch(vodVideos, flag);
-    }
-
-    @Override
-    public void add(VodVideo vodVideo, String flag) {
-        vodVideoMapper.add(vodVideo, flag);
-    }
-
-    @Override
-    public void createTable(String flag) {
-        vodVideoMapper.createTable(flag);
-    }
-
-    @Override
-    public boolean existTable(String flag) {
-        return vodVideoMapper.existTable(flag) > 0;
     }
 
     @Override
@@ -97,11 +71,6 @@ public class VodVideoServiceImpl implements VodVideoService {
         return new VodSourceVideoVo(vodProviders, videos);
     }
 
-    @Override
-    public List<VodVideo> findByDetailId(Integer detailId, String flag) {
-        Integer vid = vodService.findVid(detailId, flag);
-        return findByVid(vid, flag);
-    }
 
     @Override
     public List<VodVideo> findListByName(String name, String flag) {

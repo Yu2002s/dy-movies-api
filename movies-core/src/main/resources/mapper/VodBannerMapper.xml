@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.jdynb.dymovies.mapper.VodBannerMapper">
 
-    <select id="findList" resultType="xyz.jdynb.dymovies.entity.VodBanner">
+    <select id="findList" resultType="xyz.jdynb.dymovies.common.entity.VodBanner">
         select vd.id, vd.vid, vd.name, vd.pic, vd.note
         from dy_movies.vod_banner vb
                  left join dy_movies.vod_detail vd on vb.flag = vd.flag and vb.vid = vd.vid

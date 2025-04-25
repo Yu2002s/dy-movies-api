@@ -3,6 +3,7 @@ package xyz.jdynb.dymovies.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import xyz.jdynb.dymovies.common.dto.PageParams;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

@@ -4,9 +4,9 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import xyz.jdynb.dymovies.entity.VodType;
+import xyz.jdynb.dymovies.admin.service.AdminVodConfigService;
+import xyz.jdynb.dymovies.common.entity.VodType;
 import xyz.jdynb.dymovies.mapper.VodTypeMapper;
-import xyz.jdynb.dymovies.service.VodConfigService;
 import xyz.jdynb.dymovies.service.VodTypeService;
 
 import java.util.List;
@@ -19,21 +19,11 @@ public class VodTypeServiceImpl implements VodTypeService {
     private VodTypeMapper vodTypeMapper;
 
     @Resource
-    private VodConfigService vodConfigService;
-
-    @Override
-    public int countByFlag(String flag) {
-        return vodTypeMapper.countByFlag(flag);
-    }
-
-    @Override
-    public int addBatch(List<VodType> vodList) {
-        return vodTypeMapper.addBatch(vodList);
-    }
+    private AdminVodConfigService adminVodConfigService;
 
     @Override
     public List<VodType> findList() {
-        String flag = vodConfigService.findFlag();
+        String flag = adminVodConfigService.findFlag();
         return vodTypeMapper.findListByFlag(flag);
     }
 
@@ -43,27 +33,26 @@ public class VodTypeServiceImpl implements VodTypeService {
         if (StringUtils.hasText(flag)) {
             currentFlag = flag;
         } else {
-            currentFlag = vodConfigService.findFlag();
+            currentFlag = adminVodConfigService.findFlag();
         }
         return vodTypeMapper.findListByParent(currentFlag);
     }
 
     @Override
     public List<VodType> findAll() {
-        String flag = vodConfigService.findFlag();
-        List<VodType> vodTypes = vodTypeMapper.findAllByFlag(flag);
-        vodTypes.forEach(vodType -> {
+        String flag = adminVodConfigService.findFlag();
+        /*vodTypes.forEach(vodType -> {
             List<VodType> children = vodType.getChildren();
             if (children != null) {
                 children.add(0, new VodType(vodType.getId(), null, "全部", null));
             }
-        });
-        return vodTypes;
+        });*/
+        return vodTypeMapper.findAllByFlag(flag);
     }
 
     @Override
     public List<VodType> findListByPid(Integer pid) {
-        String flag = vodConfigService.findFlag();
+        String flag = adminVodConfigService.findFlag();
         return vodTypeMapper.findListByPid(flag, pid);
     }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.admin.mapper.AdminVodConfigMapper">
+
+    <resultMap id="BaseResultMap" type="xyz.jdynb.dymovies.common.entity.VodConfig">
+            <result property="flag" column="flag" jdbcType="VARCHAR"/>
+    </resultMap>
+    <update id="updateFlag">
+        update dy_movies.vod_config set flag = #{flag}
+    </update>
+
+    <select id="findFlag" resultType="java.lang.String">
+        select flag from dy_movies.vod_config
+    </select>
+
+</mapper>

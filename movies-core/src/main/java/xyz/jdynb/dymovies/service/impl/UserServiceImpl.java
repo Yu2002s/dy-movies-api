@@ -5,11 +5,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.jdynb.dymovies.common.utils.JwtUtils;
 import xyz.jdynb.dymovies.entity.User;
 import xyz.jdynb.dymovies.mapper.UserMapper;
 import xyz.jdynb.dymovies.service.MailService;
 import xyz.jdynb.dymovies.service.UserService;
-import xyz.jdynb.dymovies.utils.JwtUtils;
 
 import java.time.LocalDateTime;
 

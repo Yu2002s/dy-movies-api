@@ -17,6 +17,7 @@
         <java.version>17</java.version>
         <movies.common.version>0.0.1-SNAPSHOT</movies.common.version>
         <movies.admin.version>0.0.1-SNAPSHOT</movies.admin.version>
+        <movies.core.version>0.0.1-SNAPSHOT-</movies.core.version>
     </properties>
     <packaging>pom</packaging>
 
@@ -102,6 +103,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <!-- 校验器 -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
     </dependencies>
 

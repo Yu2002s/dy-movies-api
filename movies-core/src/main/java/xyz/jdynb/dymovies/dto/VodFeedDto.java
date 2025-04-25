@@ -1,9 +1,9 @@
 package xyz.jdynb.dymovies.dto;
 
 import lombok.Data;
+import xyz.jdynb.dymovies.common.entity.Vod;
+import xyz.jdynb.dymovies.common.entity.VodType;
 import xyz.jdynb.dymovies.enums.HomeCate;
-import xyz.jdynb.dymovies.entity.Vod;
-import xyz.jdynb.dymovies.entity.VodType;
 
 import java.io.Serializable;
 import java.util.List;

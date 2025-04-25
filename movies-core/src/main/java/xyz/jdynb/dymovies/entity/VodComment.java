@@ -1,10 +1,9 @@
 package xyz.jdynb.dymovies.entity;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-
 import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 影片评论表

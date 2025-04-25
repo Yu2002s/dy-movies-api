@@ -1,13 +1,14 @@
 package xyz.jdynb.dymovies.controller;
 
 import jakarta.annotation.Resource;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import xyz.jdynb.dymovies.common.dto.Page;
+import xyz.jdynb.dymovies.common.dto.VodLatestQueryParamsDto;
+import xyz.jdynb.dymovies.common.dto.VodQueryParamsDto;
+import xyz.jdynb.dymovies.common.entity.Vod;
+import xyz.jdynb.dymovies.common.entity.VodDetail;
 import xyz.jdynb.dymovies.common.pojo.Result;
-import xyz.jdynb.dymovies.dto.VodLatestQueryParamsDto;
-import xyz.jdynb.dymovies.dto.VodQueryParamsDto;
-import xyz.jdynb.dymovies.entity.Vod;
-import xyz.jdynb.dymovies.entity.VodDetail;
-import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.VodDetailService;
 import xyz.jdynb.dymovies.service.VodService;
 
@@ -42,6 +43,11 @@ public class VodController {
         vodQueryParamsDto.setTid(tid);
         vodQueryParamsDto.setPid(pid);
         return Result.success(vodService.findListByType(vodQueryParamsDto));
+    }
+
+    @PostMapping
+    public Result<Page<Vod>> getVodList(@Validated @RequestBody VodQueryParamsDto vodQueryParamsDto) {
+        return Result.success(vodService.findList(vodQueryParamsDto));
     }
 
     /**

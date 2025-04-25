@@ -1,7 +1,5 @@
 package xyz.jdynb.dymovies.mapper;
 
-import xyz.jdynb.dymovies.entity.VodReply;
-
 /**
 * @author Administrator
 * @description 针对表【vod_reply(影片回复)】的数据库操作Mapper

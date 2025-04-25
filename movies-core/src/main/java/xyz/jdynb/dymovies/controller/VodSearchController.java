@@ -6,11 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.jdynb.dymovies.common.dto.Page;
+import xyz.jdynb.dymovies.common.dto.VodQueryParamsDto;
+import xyz.jdynb.dymovies.common.entity.VodDetail;
 import xyz.jdynb.dymovies.common.pojo.Result;
-import xyz.jdynb.dymovies.dto.VodQueryParamsDto;
-import xyz.jdynb.dymovies.entity.Vod;
-import xyz.jdynb.dymovies.entity.VodDetail;
-import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.VodSearchService;
 
 @RestController
@@ -21,11 +20,8 @@ public class VodSearchController {
     private VodSearchService vodSearchService;
 
     @PostMapping
-    public Result<Page<VodDetail>> search(@Validated @RequestBody VodQueryParamsDto vodQueryParamsDto) {
-        if (vodQueryParamsDto.getPageSize() == null) {
-            vodQueryParamsDto.setPageSize(10);
-        }
-        return Result.success(vodSearchService.findListByKeywordAndType(vodQueryParamsDto));
+    public Result<Page<VodDetail>> searchVodList(@Validated @RequestBody VodQueryParamsDto vodQueryParamsDto) {
+        return Result.success(vodSearchService.findList(vodQueryParamsDto));
     }
 
 }

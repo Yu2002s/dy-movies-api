@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.jdynb.dymovies.anno.RequireLogin;
+import xyz.jdynb.dymovies.common.anno.RequireLogin;
 import xyz.jdynb.dymovies.common.pojo.Result;
+import xyz.jdynb.dymovies.common.vo.UserAuthVo;
 import xyz.jdynb.dymovies.entity.User;
 import xyz.jdynb.dymovies.service.UserService;
-import xyz.jdynb.dymovies.vo.UserAuthVo;
 
 @Slf4j
 @RestController

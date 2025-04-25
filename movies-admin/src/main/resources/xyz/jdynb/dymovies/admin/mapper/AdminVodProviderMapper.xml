@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.admin.mapper.AdminVodProviderMapper">
+
+    <resultMap id="vodProviderMap" type="xyz.jdynb.dymovies.admin.entity.AdminVodProvider">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="add">
+        insert into dy_movies.vod_provider (url, name, remark) values (#{url}, #{name}, #{remark})
+    </insert>
+    <update id="update">
+        update dy_movies.vod_provider
+        set url = #{url}, name = #{name}, remark = #{remark}
+        <if test="weight != null">
+            ,weight = #{weight}
+        </if>
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from dy_movies.vod_provider where id = #{id}
+    </delete>
+</mapper>

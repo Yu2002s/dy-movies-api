@@ -3,8 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.jdynb.dymovies.mapper.VodMapper">
-
-    <sql id="baseSelect">
+    <sql id="baseQuery">
         select v.id,
                v.vid,
                v.name,
@@ -14,37 +13,74 @@
                v.flag,
                v.create_time,
                v.pic
-    </sql>
-
-    <sql id="baseQuery">
-        <include refid="baseSelect"/>
-        ,vt.name as type_name
         from dy_movies.vod_detail v
-        left join dy_movies.vod_type vt on v.tid = vt.id and v.flag = vt.flag
-        where v.flag = #{flag}
     </sql>
 
-    <resultMap id="vodMap" type="xyz.jdynb.dymovies.entity.Vod">
+    <sql id="listWhere">
+        <where>
+            <if test="flag != null and flag != ''">
+                v.flag = #{flag}
+            </if>
+            <if test="tid == null and pid != null">
+                and v.tid in (select id from dy_movies.vod_type where
+                <if test="flag != null and flag != ''">
+                    flag = #{flag} and
+                </if>
+                pid = #{pid})
+            </if>
+            <if test="tid != null and tid != 0">
+                and tid = #{tid}
+            </if>
+            <if test="yearEnd == null and year != null and year != ''">
+                and v.year = #{year}
+            </if>
+            <if test="yearEnd != null and yearEnd != ''">
+                and v.year between #{year} and #{yearEnd}
+            </if>
+            <if test="area != null and area != ''">
+                and v.area like concat('%', #{area}, '%')
+            </if>
+            <if test="keyword != null and keyword != ''">
+                and v.name like concat('%', #{keyword}, '%')
+            </if>
+        </where>
+    </sql>
+
+    <!-- 查询过滤数据 -->
+    <sql id="listQuery">
+        <include refid="xyz.jdynb.dymovies.mapper.VodMapper.listWhere"/>
+        order by v.year
+        <choose>
+            <when test="sort == 1">
+                desc
+            </when>
+            <otherwise>
+                asc
+            </otherwise>
+        </choose>
+        , v.update_time
+        <choose>
+            <when test="sort == 1">
+                desc
+            </when>
+            <otherwise>
+                asc
+            </otherwise>
+        </choose>
+        limit #{pageOffset}, #{pageSize}
+    </sql>
+
+    <resultMap id="vodMap" type="xyz.jdynb.dymovies.common.entity.Vod">
         <id property="id" column="id" jdbcType="INTEGER"/>
         <result property="vid" column="vid" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="tid" column="tid" jdbcType="INTEGER"/>
-        <result property="type" column="type_name" jdbcType="VARCHAR"/>
         <result property="pic" column="pic" jdbcType="VARCHAR"/>
         <result property="note" column="note" jdbcType="VARCHAR"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="flag" column="flag" jdbcType="VARCHAR"/>
     </resultMap>
-    <insert id="addBatch">
-        insert into dy_movies.vod(vid, name,tid,note,update_time,flag) values
-        <foreach collection="vodList" item="item" separator=",">
-            (#{item.vid},#{item.name},#{item.tid},#{item.note},#{item.updateTime},#{item.flag})
-        </foreach>
-    </insert>
-    <insert id="add">
-        insert into dy_movies.vod(vid, name, tid, note, update_time, flag)
-        values (#{vid}, #{name}, #{tid}, #{note}, #{updateTime}, #{flag})
-    </insert>
+
     <update id="updateAllCate">
 
     </update>
@@ -68,6 +104,7 @@
     </select>
     <select id="findListByTid" resultMap="vodMap">
         <include refid="baseQuery"/>
+        where v.flag = #{flag}
         <if test="pid != null">
             and v.tid = #{tid}
         </if>
@@ -79,6 +116,7 @@
     </select>
     <select id="findLast" resultMap="vodMap">
         <include refid="baseQuery"/>
+        where v.flag = #{flag}
         <if test="typeId != null">
             and tid = #{typeId}
         </if>
@@ -88,6 +126,18 @@
         select vid
         from dy_movies.vod_detail
         where id = #{id}
-          and flag = #{flag} limit 1
+          and flag = #{flag}
+        limit 1
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*)
+        from dy_movies.vod_detail v
+        <include refid="listWhere"/>
+    </select>
+
+    <select id="findList" resultMap="vodMap">
+        <include refid="baseQuery"/>
+        <include refid="listQuery"/>
     </select>
 </mapper>

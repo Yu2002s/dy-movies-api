@@ -2,20 +2,16 @@ package xyz.jdynb.dymovies.service.impl;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import xyz.jdynb.dymovies.dto.VodLatestQueryParamsDto;
-import xyz.jdynb.dymovies.dto.VodQueryParamsDto;
-import xyz.jdynb.dymovies.entity.Vod;
-import xyz.jdynb.dymovies.entity.VodDetail;
+import org.springframework.util.StringUtils;
+import xyz.jdynb.dymovies.admin.service.AdminVodConfigService;
+import xyz.jdynb.dymovies.common.dto.Page;
+import xyz.jdynb.dymovies.common.dto.VodLatestQueryParamsDto;
+import xyz.jdynb.dymovies.common.dto.VodQueryParamsDto;
+import xyz.jdynb.dymovies.common.entity.Vod;
 import xyz.jdynb.dymovies.mapper.VodMapper;
-import xyz.jdynb.dymovies.dto.Page;
-import xyz.jdynb.dymovies.service.VodConfigService;
 import xyz.jdynb.dymovies.service.VodService;
-import xyz.jdynb.dymovies.service.VodTypeService;
 
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
 
 @Service
 public class VodServiceImpl implements VodService {
@@ -24,17 +20,7 @@ public class VodServiceImpl implements VodService {
     private VodMapper vodMapper;
 
     @Resource
-    private VodConfigService vodConfigService;
-
-    @Override
-    public int add(Vod vod) {
-        return vodMapper.add(vod);
-    }
-
-    @Override
-    public int addBatch(List<Vod> vodList) {
-        return vodMapper.addBatch(vodList);
-    }
+    private AdminVodConfigService adminVodConfigService;
 
     @Override
     public int addOrUpdate(Vod vod) {
@@ -43,17 +29,12 @@ public class VodServiceImpl implements VodService {
 
     @Override
     public int count(String flag) {
-        return vodMapper.count(flag);
-    }
-
-    @Override
-    public int countByVidAndFlag(Integer id, String flag) {
-        return vodMapper.countByVidAndFlag(id, flag);
+        return vodMapper.countByFlag(flag);
     }
 
     @Override
     public Page<Vod> findListByType(VodQueryParamsDto vodQueryParamsDto) {
-        String flag = vodConfigService.findFlag();
+        String flag = adminVodConfigService.findFlag();
         vodQueryParamsDto.setFlag(flag);
 
         int total;
@@ -82,7 +63,7 @@ public class VodServiceImpl implements VodService {
 
     @Override
     public List<Vod> findLast(VodLatestQueryParamsDto vodLatestQueryParamsDto) {
-        String flag = vodConfigService.findFlag();
+        String flag = adminVodConfigService.findFlag();
         vodLatestQueryParamsDto.setFlag(flag);
         return vodMapper.findLast(vodLatestQueryParamsDto);
     }
@@ -90,5 +71,31 @@ public class VodServiceImpl implements VodService {
     @Override
     public Integer findVid(Integer id, String flag) {
         return vodMapper.findVid(id, flag);
+    }
+
+    @Override
+    public Page<Vod> findList(VodQueryParamsDto vodQueryParamsDto) {
+        if (!StringUtils.hasText(vodQueryParamsDto.getFlag())) {
+            vodQueryParamsDto.setFlag(adminVodConfigService.findFlag());
+        }
+        String year = vodQueryParamsDto.getYear();
+        if (StringUtils.hasText(year)) {
+            String[] years = year.split("-");
+            if (years.length == 2) {
+                vodQueryParamsDto.setYear(years[0]);
+                vodQueryParamsDto.setYearEnd(years[1]);
+            }
+        }
+        int count = count(vodQueryParamsDto);
+        return Page.of(vodQueryParamsDto.getPage(), count, vodQueryParamsDto.getPageSize(),
+                vodMapper.findList(vodQueryParamsDto));
+    }
+
+    @Override
+    public int count(VodQueryParamsDto vodQueryParamsDto) {
+        if (!StringUtils.hasText(vodQueryParamsDto.getFlag())) {
+            vodQueryParamsDto.setFlag(adminVodConfigService.findFlag());
+        }
+        return vodMapper.count(vodQueryParamsDto);
     }
 }

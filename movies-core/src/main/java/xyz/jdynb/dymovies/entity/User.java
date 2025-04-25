@@ -1,9 +1,9 @@
 package xyz.jdynb.dymovies.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
-import lombok.Data;
 
 /**
  * 用户表

@@ -1,18 +1,18 @@
 package xyz.jdynb.dymovies.controller;
 
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import xyz.jdynb.dymovies.anno.Cacheable;
-import xyz.jdynb.dymovies.anno.RequireLogin;
+import xyz.jdynb.dymovies.common.anno.Cacheable;
+import xyz.jdynb.dymovies.common.anno.RequireLogin;
+import xyz.jdynb.dymovies.common.dto.Page;
 import xyz.jdynb.dymovies.common.pojo.Result;
 import xyz.jdynb.dymovies.dto.VodCommentAddParamsDto;
 import xyz.jdynb.dymovies.dto.VodCommentQueryParamsDto;
 import xyz.jdynb.dymovies.entity.User;
 import xyz.jdynb.dymovies.entity.VodComment;
-import xyz.jdynb.dymovies.dto.Page;
 import xyz.jdynb.dymovies.service.VodCommentService;
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 影片评论
