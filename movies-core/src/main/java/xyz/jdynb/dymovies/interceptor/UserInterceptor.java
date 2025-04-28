@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import xyz.jdynb.dymovies.common.anno.RequireLogin;
+import xyz.jdynb.dymovies.common.constants.StatusCode;
 import xyz.jdynb.dymovies.common.pojo.Result;
 import xyz.jdynb.dymovies.common.utils.JwtUtils;
 import xyz.jdynb.dymovies.entity.User;
@@ -52,7 +53,7 @@ public class UserInterceptor implements HandlerInterceptor {
     private void writeJson(HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(StatusCode.NOT_LOGIN);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(response.getWriter(), Result.error("未登录"));
     }

@@ -55,4 +55,10 @@
         </choose>
         limit #{pageOffset}, #{pageSize}
     </select>
+    <select id="findNameByKeyword" resultType="java.lang.String">
+        select name
+        from dy_movies.vod_detail
+        where flag = #{flag} and name like concat('%', #{keyword}, '%')
+        order by update_time desc limit 10
+    </select>
 </mapper>

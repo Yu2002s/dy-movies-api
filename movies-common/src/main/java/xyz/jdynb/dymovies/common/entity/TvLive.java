@@ -1,8 +1,10 @@
-package xyz.jdynb.dymovies.entity;
+package xyz.jdynb.dymovies.common.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -19,27 +21,15 @@ public class TvLive implements Serializable {
     /**
      * 来源名称
      */
+    @NotNull(message = "来源名称不能为空")
+    @NotBlank(message = "来源名称不能为空")
     private String name;
 
     /**
      * 直播地址
      */
+    @NotNull(message = "直播地址不能为空")
     private String url;
-
-    /**
-     * 是否启用
-     */
-    private Integer status;
-
-    /**
-     * 权重
-     */
-    private Integer weight;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createAt;
 
     private static final long serialVersionUID = 1L;
 }

@@ -3,6 +3,7 @@ package xyz.jdynb.dymovies.service.impl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import xyz.jdynb.dymovies.admin.service.AdminVodConfigService;
 import xyz.jdynb.dymovies.common.dto.Page;
 import xyz.jdynb.dymovies.common.dto.VodQueryParamsDto;
 import xyz.jdynb.dymovies.common.entity.VodDetail;
@@ -10,6 +11,7 @@ import xyz.jdynb.dymovies.mapper.VodSearchMapper;
 import xyz.jdynb.dymovies.service.VodSearchService;
 import xyz.jdynb.dymovies.service.VodService;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -20,6 +22,9 @@ public class VodSearchServiceImpl implements VodSearchService {
 
     @Resource
     private VodService vodService;
+
+    @Resource
+    private AdminVodConfigService adminVodConfigService;
 
     @Override
     public Page<VodDetail> findList(VodQueryParamsDto vodQueryParamsDto) {
@@ -34,5 +39,14 @@ public class VodSearchServiceImpl implements VodSearchService {
         int total = vodService.count(vodQueryParamsDto);
         List<VodDetail> list = vodSearchMapper.findList(vodQueryParamsDto);
         return Page.of(vodQueryParamsDto.getPage(), total, vodQueryParamsDto.getPageSize(), list);
+    }
+
+    @Override
+    public List<String> findNameByKeyword(String keyword) {
+        if (keyword.isBlank()) {
+            return Collections.emptyList();
+        }
+        String flag = adminVodConfigService.findFlag();
+        return vodSearchMapper.findNameByKeyword(keyword, flag);
     }
 }

@@ -10,4 +10,6 @@ import java.util.List;
 public interface VodSearchMapper {
 
     List<VodDetail> findList(VodQueryParamsDto params);
+
+    List<String> findNameByKeyword(String keyword, String flag);
 }
