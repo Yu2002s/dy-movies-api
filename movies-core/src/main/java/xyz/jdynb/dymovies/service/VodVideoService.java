@@ -4,6 +4,7 @@ import xyz.jdynb.dymovies.common.entity.VodVideo;
 import xyz.jdynb.dymovies.common.pojo.VodSource;
 import xyz.jdynb.dymovies.common.vo.VodSourceVideoVo;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface VodVideoService {
@@ -23,4 +24,6 @@ public interface VodVideoService {
     VodSourceVideoVo findSourcesAndVideos(Integer vid, String flag);
 
     List<VodVideo> findListByName(String name, String flag);
+
+    void proxy(String url) throws IOException;
 }

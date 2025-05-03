@@ -1,16 +1,15 @@
 package xyz.jdynb.dymovies.controller;
 
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.web.bind.annotation.*;
 import xyz.jdynb.dymovies.common.entity.VodVideo;
 import xyz.jdynb.dymovies.common.pojo.Result;
 import xyz.jdynb.dymovies.common.pojo.VodSource;
 import xyz.jdynb.dymovies.common.vo.VodSourceVideoVo;
 import xyz.jdynb.dymovies.service.VodVideoService;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -63,5 +62,14 @@ public class VodVideoController {
     @GetMapping("/source")
     public Result<VodSourceVideoVo> getVodSourcesAndVideosByVid(Integer vid, String flag) {
         return Result.success(vodVideoService.findSourcesAndVideos(vid, flag));
+    }
+
+    /**
+     * 获取影片的代理地址，这个地址去除了视频内嵌的广告
+     * @param url 原生视频播放地址
+     */
+    @GetMapping("/proxy")
+    public void getProxyVideoUrl(String url) throws IOException {
+        vodVideoService.proxy(url);
     }
 }

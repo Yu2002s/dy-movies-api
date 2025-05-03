@@ -53,8 +53,8 @@ public class UserInterceptor implements HandlerInterceptor {
     private void writeJson(HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.setStatus(StatusCode.NOT_LOGIN);
+        response.setStatus(HttpServletResponse.SC_OK);
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(response.getWriter(), Result.error("未登录"));
+        objectMapper.writeValue(response.getWriter(), Result.error(StatusCode.NOT_LOGIN, "未登录，请先登录"));
     }
 }

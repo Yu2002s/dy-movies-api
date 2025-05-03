@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.jdynb.dymovies.mapper.FeedbackMapper">
+
+    <resultMap id="feedbackMap" type="xyz.jdynb.dymovies.common.entity.Feedback">
+        <result column="read" property="isRead" jdbcType="TINYINT"/>
+    </resultMap>
+    <insert id="add">
+        insert into dy_movies.feedback (content, contact) values (#{content}, #{contact})
+    </insert>
+
+    <update id="update">
+        update dy_movies.feedback
+        <set>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="contact != null and contact != ''">
+                contact = #{contact},
+            </if>
+            <if test="isRead == 0 or isRead == 1">
+                `read` = #{isRead}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="int">
+        select count(*)
+        from dy_movies.feedback
+    </select>
+    <select id="findList" resultMap="feedbackMap">
+        select id, content, contact, create_at, `read`
+        from dy_movies.feedback
+        limit #{pageOffset}, #{pageSize}
+    </select>
+
+</mapper>
