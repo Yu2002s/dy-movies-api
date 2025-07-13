@@ -34,6 +34,7 @@
     <select id="findList" resultMap="feedbackMap">
         select id, content, contact, create_at, `read`
         from dy_movies.feedback
+        order by create_at desc
         limit #{pageOffset}, #{pageSize}
     </select>
 

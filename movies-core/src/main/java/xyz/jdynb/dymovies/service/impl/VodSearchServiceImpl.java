@@ -7,6 +7,7 @@ import xyz.jdynb.dymovies.admin.service.AdminVodConfigService;
 import xyz.jdynb.dymovies.common.dto.Page;
 import xyz.jdynb.dymovies.common.dto.VodQueryParamsDto;
 import xyz.jdynb.dymovies.common.entity.VodDetail;
+import xyz.jdynb.dymovies.mapper.VodMapper;
 import xyz.jdynb.dymovies.mapper.VodSearchMapper;
 import xyz.jdynb.dymovies.service.VodSearchService;
 import xyz.jdynb.dymovies.service.VodService;
@@ -21,7 +22,7 @@ public class VodSearchServiceImpl implements VodSearchService {
     private VodSearchMapper vodSearchMapper;
 
     @Resource
-    private VodService vodService;
+    private VodMapper vodMapper;
 
     @Resource
     private AdminVodConfigService adminVodConfigService;
@@ -36,7 +37,7 @@ public class VodSearchServiceImpl implements VodSearchService {
                 vodQueryParamsDto.setYearEnd(years[1]);
             }
         }
-        int total = vodService.count(vodQueryParamsDto);
+        int total = vodMapper.count(vodQueryParamsDto);
         List<VodDetail> list = vodSearchMapper.findList(vodQueryParamsDto);
         return Page.of(vodQueryParamsDto.getPage(), total, vodQueryParamsDto.getPageSize(), list);
     }

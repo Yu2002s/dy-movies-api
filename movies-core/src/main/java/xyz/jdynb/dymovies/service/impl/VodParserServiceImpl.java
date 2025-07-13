@@ -33,24 +33,30 @@ public class VodParserServiceImpl implements VodParserService {
         if (url.endsWith(".m3u8")) {
             return new VodParseUrlVo(url);
         }
-        // TODO: 其他的情况下 ukm3u8
         try (HttpResponse response = HttpRequest.get(url).execute()) {
             String body = response.body();
-            Pattern pattern = Pattern.compile("const url = \"(.+)\";");
-            Matcher matcher = pattern.matcher(body);
-            if (matcher.find()) {
-                String host = url.substring(0, url.indexOf("/", 10));
-                VodParseUrlVo vodParseUrlVo = new VodParseUrlVo();
-                String group = matcher.group(1);
-                int lastIndex = group.lastIndexOf("?");
-                if (lastIndex != -1) {
-                    group = group.substring(0, lastIndex);
+            String[] regexArr = new String[]{"const url = \"(.+)\";", "url: ['\"](.+)['\"]"};
+            for (String regex : regexArr) {
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(body);
+                if (matcher.find()) {
+                    VodParseUrlVo vodParseUrlVo = new VodParseUrlVo();
+                    String group = matcher.group(1);
+                    int lastIndex = group.lastIndexOf("?");
+                    if (lastIndex != -1) {
+                        group = group.substring(0, lastIndex);
+                    }
+                    String videoUrl = group;
+                    if (!group.startsWith("http")) {
+                        String host = url.substring(0, url.indexOf("/", 10));
+                        videoUrl = host + videoUrl;
+                    }
+                    vodParseUrlVo.setUrl(videoUrl);
+                    if (StringUtils.hasText(group)) {
+                        vodVideoService.updateUrlById(id, vodParseUrlVo.getUrl(), flag);
+                    }
+                    return vodParseUrlVo;
                 }
-                vodParseUrlVo.setUrl(host + group);
-                if (StringUtils.hasText(group)) {
-                    vodVideoService.updateUrlById(id, vodParseUrlVo.getUrl(), flag);
-                }
-                return vodParseUrlVo;
             }
         }
         return null;

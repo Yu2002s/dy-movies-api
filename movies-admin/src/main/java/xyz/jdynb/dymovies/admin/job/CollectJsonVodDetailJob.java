@@ -7,6 +7,9 @@ import xyz.jdynb.dymovies.common.entity.VodDetail;
 
 import java.util.List;
 
+/**
+ * 以 json方式采集， 目前只需要这一个采集类即可
+ */
 public class CollectJsonVodDetailJob extends CollectVodDetailJob {
 
     @Override

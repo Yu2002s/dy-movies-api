@@ -27,7 +27,7 @@
                 name = #{name},
             </if>
             <if test="pid == null or pid == ''">
-                pid = null,
+                pid = 0,
             </if>
             <if test="pid != null and pid != ''">
                 pid = #{pid},
@@ -60,7 +60,7 @@
         c.flag cflag
         from dy_movies.vod_type p
         left join dy_movies.vod_type c on p.id = c.pid and p.flag = c.flag
-        where p.pid is null
+        where p.pid = 0
         <if test="flag != null and flag != ''">
             and p.flag = #{flag}
         </if>

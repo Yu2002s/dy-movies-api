@@ -5,7 +5,6 @@ spring:
     name: DyMovies
   # 数据源配置
   datasource:
-    url: jdbc:mysql://localhost:3306/dy_movies?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&allowMultiQueries=true&rewriteBatchedStatements=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: jdy200255

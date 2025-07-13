@@ -7,8 +7,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import xyz.jdynb.dymovies.common.entity.VodBanner;
 import xyz.jdynb.dymovies.dto.VodFeedDto;
+import xyz.jdynb.dymovies.entity.SystemNotify;
 import xyz.jdynb.dymovies.enums.HomeCate;
 import xyz.jdynb.dymovies.service.HomeVodService;
+import xyz.jdynb.dymovies.service.SystemNotifyService;
 import xyz.jdynb.dymovies.service.VodBannerService;
 import xyz.jdynb.dymovies.service.VodService;
 import xyz.jdynb.dymovies.vo.HomeVodDataVo;
@@ -27,8 +29,8 @@ public class HomeVodServiceImpl implements HomeVodService {
     @Resource
     private VodService vodService;
 
-    /* @Resource
-     private VodTypeService vodTypeService; */
+    @Resource
+    private SystemNotifyService systemNotifyService;
 
     // 缓存首页数据，提高访问速度，缓存时间可根据业务需求调整
     @Override
@@ -42,23 +44,18 @@ public class HomeVodServiceImpl implements HomeVodService {
             CompletableFuture<VodFeedDto> updateFeedFuture = CompletableFuture.supplyAsync(() ->
                     VodFeedDto.createFeed(HomeCate.UPDATE, vodService.findLast(9)));
 
-            // 获取所有父分类并加载其数据
-            // List<VodType> typeList = vodTypeService.findAll();
-
-            // 使用批量查询方法
-            // CompletableFuture<List<VodFeedDto>> typeFeedsFuture = loadTypeFeedsAsync(typeList);
+            CompletableFuture<List<SystemNotify>> notifyFuture = CompletableFuture.supplyAsync(systemNotifyService::findAll);
 
             // 等待所有异步任务完成
             List<VodBanner> banners = bannersFuture.get();
             VodFeedDto updateFeed = updateFeedFuture.get();
-            // List<VodFeedDto> typeFeeds = typeFeedsFuture.get();
+            List<SystemNotify> notifyList = notifyFuture.get();
 
             // 设置结果
             homeVodDataVo.setBanners(banners);
-
+            homeVodDataVo.setNotifyList(notifyList);
             List<VodFeedDto> feeds = new ArrayList<>();
             feeds.add(updateFeed);
-            // feeds.addAll(typeFeeds);
 
             homeVodDataVo.setFeeds(feeds);
             return homeVodDataVo;
@@ -68,6 +65,7 @@ public class HomeVodServiceImpl implements HomeVodService {
             HomeVodDataVo fallbackData = new HomeVodDataVo();
             fallbackData.setBanners(new ArrayList<>());
             fallbackData.setFeeds(new ArrayList<>());
+            fallbackData.setNotifyList(new ArrayList<>());
             return fallbackData;
         }
     }

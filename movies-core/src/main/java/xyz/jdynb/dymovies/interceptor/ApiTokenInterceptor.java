@@ -37,8 +37,10 @@ public class ApiTokenInterceptor implements HandlerInterceptor {
         String token = request.getHeader("Api-Token");
         String apiKey = request.getHeader("Api-Key");
 
-        Method method = ((HandlerMethod) handler).getMethod();
-        handleCache(method, request, response);
+        if (handler instanceof HandlerMethod) {
+            Method method = ((HandlerMethod) handler).getMethod();
+            handleCache(method, request, response);
+        }
 
         // log.info("token verify: {} , {} , {}", time, apiKey, token);
         if (API_KEY.equals(apiKey)) {

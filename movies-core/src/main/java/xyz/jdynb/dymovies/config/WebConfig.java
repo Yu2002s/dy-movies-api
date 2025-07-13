@@ -7,7 +7,6 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import xyz.jdynb.dymovies.converter.SortByConverter;
 import xyz.jdynb.dymovies.interceptor.ApiTokenInterceptor;
 import xyz.jdynb.dymovies.interceptor.UserInterceptor;
 
@@ -21,9 +20,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Resource
     private UserInterceptor userInterceptor;
-
-    @Resource
-    private SortByConverter sortByConverter;
 
     @Value("${spring.profiles.active}")
     private String profile;
@@ -44,10 +40,5 @@ public class WebConfig implements WebMvcConfigurer {
         }
         registry.addInterceptor(userInterceptor)
                 .addPathPatterns("/admin/**", "/users/**", "/vodComments/**");
-    }
-
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(sortByConverter);
     }
 }
